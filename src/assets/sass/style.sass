@@ -23,21 +23,53 @@
 
 
 
+.round
+  border-radius: 10px
+  &__img
+    border-radius: 10px
+    overflow: hidden
 
-// auth
-// -----------------------------------------------------
-.auth
-  // btn
-  .v-btn--large
-    padding: 0 50px
-    text-transform: uppercase
-    background-image: linear-gradient(to right top, #3aaf9f, #3aaf9f, #3aaf9f, #3aaf9f, #3aaf9f)
-    color: #fff
-  // inputs
-  .v-text-field--box > .v-input__control > .v-input__slot
-    // border-radius: 4px
-    &:before, &:after
-      display: none
+.text
+  &--small
+    font-weight: 300
+    color: #8e9194
+    font-size: torem(13)
+
+
+
+
+.v-card
+  &__title
+    padding-bottom: 0
+  &__text
+    padding-top: 0
+  &__actions .v-btn 
+    margin-left: 0
+    padding: 0 5px
+
+
+.theme
+  &--light
+
+    &.v-toolbar
+      background-color: #fff
+    .v-toolbar
+      // #FCFCFC
+      box-shadow: 0px 4px 10px 0px rgba(170,170,170,0.14), 0px 1px 14px 0px rgba(170,170,170,0.12)
+
+      .v-btn
+        text-transform: none
+        font-weight: 300
+      .v-list__tile
+        font-weight: 300
+
+
+
+.v-content
+  // background-color: #F8F8F8
+  // background-color: #FAFAFA
+  // background-color: #444063
+  background-image: linear-gradient(to bottom, #f8f8f8, #f8f8f8, #f8f7f8, #f7f7f8, #f7f7f8)
 
 
 
@@ -167,29 +199,3 @@
 //   transition: transform 400ms ease
 
 
-.flip
-  &-enter
-    // transform: translateX(-100%)
-    &-active
-      animation: flipX 400ms linear
-      transform-origin: left
-      // position: absolute
-      
-  &-leave
-    &-active
-      // animation: flipXOut 0.3s linear
-      // transform-origin: left
-      display: none
-      
-      
-@keyframes flipX
-  from
-    transform: rotateY(90deg)
-  to
-    transform: rotateY(0deg)
-
-@keyframes flipXOut
-  from
-    transform: rotateY(0deg)
-  to
-    transform: rotateY(90deg)
