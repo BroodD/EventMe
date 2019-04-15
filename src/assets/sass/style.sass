@@ -1,0 +1,195 @@
+@import './_mixins.sass'
+@import './stuff.sass'
+
+// default
+// -----------------------------------------------------
+
+// colors
+.bg
+  &-gra
+    &-primary
+      // background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12)
+      background-image: linear-gradient(to right top, #4cc196, #44bc9a, #3eb79d, #3bb29f, #3aada1)
+
+// font
+// -----------------------------------------------------
+.fz
+  &-40
+    font-size: torem(40)
+
+.fw
+  &-300
+    font-weight: 300
+
+
+
+
+// auth
+// -----------------------------------------------------
+.auth
+  // btn
+  .v-btn--large
+    padding: 0 50px
+    text-transform: uppercase
+    background-image: linear-gradient(to right top, #3aaf9f, #3aaf9f, #3aaf9f, #3aaf9f, #3aaf9f)
+    color: #fff
+  // inputs
+  .v-text-field--box > .v-input__control > .v-input__slot
+    // border-radius: 4px
+    &:before, &:after
+      display: none
+
+
+
+
+// mobile drawer awatar
+// -----------------------------------------------------
+.avatar__sub 
+  position: absolute
+  bottom: 0
+  color: #fff !important
+  background-color: #00000085
+  width: 100%
+
+.v-navigation-drawer .v-list__tile--active 
+  background-color: #fff !important
+
+
+// .menu-popover-enter
+//   transform: translateX(-100%)
+// .menu-popover-enter-to
+//   transform: translateX(0)
+
+// .menu-popover-menu-popover-active
+//   position: absolute
+
+// .menu-popover-leave
+//   transform: translateX(0)
+// .menu-popover-leave-to
+//   transform: translateX(-100%)
+
+// .menu-popover-active,
+// .menu-popover-leave-active
+//   transition: transform 400ms ease
+
+
+
+
+// .menu-popover-enter,
+// .menu-popover-leave-to 
+//   opacity: 0
+//   // transform: rotateY(90deg)
+//   // transform-origin: left
+//   // position: absolute
+  
+
+// .menu-popover-enter-to,
+// .menu-popover-leave 
+//   opacity: 1
+//   // transform: rotateY(0deg)
+//   // transform-origin: left
+//   // position: absolute
+
+
+// .menu-popover-enter-active,
+// .menu-popover-leave-active 
+//   overflow: hidden
+//   // position: absolute
+//   transition: opacity, transform 200ms ease-out
+
+
+
+// .menu-popover-enter-active,
+// .menu-popover-leave-active
+//   transition: all 0.5s
+
+// .menu-popover-enter,
+// .menu-popover-leave-to
+//   opacity: 0
+//   transform: rotateY(90deg)
+
+
+// .flip
+//   &-enter
+//     &-active
+//       animation: flipX 0.3s linear
+//       transform-origin: bottom
+//   &-leave
+//     &-active
+//       animation: flipXOut 0.3s linear
+//       transform-origin: top
+// @keyframes flipX
+//   from
+//     transform: rotateX(90deg)
+//   to
+//     transform: rotateX(0deg)
+
+// @keyframes flipXOut
+//   from
+//     transform: rotateX(0deg)
+//   to
+//     transform: rotateX(90deg)
+
+
+// .flip-enter
+//   transform: translateX(-100%)
+// .flip-enter-to
+//   transform: translateX(0)
+
+// .flip-active
+//   position: absolute
+
+// .flip-leave
+//   transform: translateX(0)
+// .flip-leave-to
+//   transform: translateX(-100%)
+
+// .flip-active,
+// .flip-leave-active
+//   transition: transform 400ms ease
+
+
+// .flip-left-enter
+//   transform: translateX(100%)
+// .flip-left-enter-to
+//   transform: translateX(0)
+
+// // .flip-left-active
+// //   position: absolute
+
+// .flip-left-leave
+//   transform: translateX(0)
+// .flip-left-leave-to
+//   transform: translateX(100%)
+
+// .flip-left-active,
+// .flip-left-leave-active
+//   transition: transform 400ms ease
+
+
+.flip
+  &-enter
+    // transform: translateX(-100%)
+    &-active
+      animation: flipX 400ms linear
+      transform-origin: left
+      // position: absolute
+      
+  &-leave
+    &-active
+      // animation: flipXOut 0.3s linear
+      // transform-origin: left
+      display: none
+      
+      
+@keyframes flipX
+  from
+    transform: rotateY(90deg)
+  to
+    transform: rotateY(0deg)
+
+@keyframes flipXOut
+  from
+    transform: rotateY(0deg)
+  to
+    transform: rotateY(90deg)
