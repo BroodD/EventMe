@@ -1,161 +1,189 @@
 <template>
   <v-container grid-list-md fluid v-if="single">
-    <v-layout row wrap justify-center class="card-wrap">
+    <v-layout row wrap justify-center>
       <v-flex xs12 md8>
-        <v-card class="elevation-12">
-          <v-toolbar dark color="primary">
-            <v-toolbar-title>Edit card</v-toolbar-title>
-          </v-toolbar>
+        <v-form v-model="valid" ref="form" validation @submit.prevent="false">
+          <v-card>
+            <v-toolbar dark color="primary">
+              <v-toolbar-title>{{ currentTitle }}</v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-avatar
+                color="secondary lighten-2"
+                class="primary--text"
+                size="24"
+                v-text="step"
+              ></v-avatar>
+            </v-toolbar>
 
-          <v-card-text>
-            <v-form v-model="valid" ref="form" validation class="mb-3">
-              <v-text-field
-                name="title"
-                label="Title"
-                type="text"
-                :value="single.title"
-                @input="title = $event"
-                required
-                :rules="[v => !!v || 'Title is required']"
-              ></v-text-field>
+            <v-window v-model="step">
+              <v-window-item :value="1">
+                <v-card-text>
+                  <v-text-field
+                    box
+                    name="title"
+                    label="Title"
+                    type="text"
+                    v-model="title"
+                    required
+                    :rules="[v => !!v || 'Title is required']"
+                  ></v-text-field>
 
-              <v-textarea
-                name="description"
-                label="Description"
-                type="text"
-                :value="single.desc"
-                @input="desc = $event"
-                multi-line
-                auto-grow
-                :rules="[v => !!v || 'Description is required']"
-              ></v-textarea>
+                  <v-textarea
+                    box
+                    name="description"
+                    label="Description"
+                    type="text"
+                    v-model="desc"
+                    multi-line
+                    auto-grow
+                    :rules="[v => !!v || 'Description is required']"
+                  ></v-textarea>
+                </v-card-text>
+              </v-window-item>
 
-              <v-text-field
-                name="people"
-                label="Count people"
-                type="text"
-                :value="single.people"
-                @input="people = $event"
-                :rules="peopleRules"
-              ></v-text-field>
-
-              <!-- <v-layout>
-								<v-flex sm6>
-									<v-date-picker v-model="date"></v-date-picker>
-								</v-flex>
-								<v-flex sm6>
-									<v-time-picker
-										v-model="time"
-									/>
-								</v-flex>
-							</v-layout> -->
-
-              <v-dialog
-                ref="date"
-                v-model="dateModal"
-                :return-value.sync="date"
-                persistent
-                lazy
-                full-width
-              >
-                <!-- :value="single.time | timeConvert(0, 10)"
-                  @input="date = $event" -->
-                <v-text-field
-                  slot="activator"
-                  label="Set a date"
-                  readonly
-                  v-model="date"
-                  :rules="dateRules"
-                  clearable
-                ></v-text-field>
-                <v-date-picker
-                  full-width
-                  v-model="date"
-                  @input="$refs.date.save(date)"
-                ></v-date-picker>
-              </v-dialog>
-
-              <v-dialog
-                ref="time"
-                v-model="timeModal"
-                :return-value.sync="time"
-                persistent
-                lazy
-                full-width
-              >
-                <!-- class="dialog" -->
-                <!-- width="290px" -->
-                <!-- :value="single.time | timeConvert(11, 5)"
-                  @input="time = $event" -->
-                <v-text-field
-                  slot="activator"
-                  label="Set a time"
-                  readonly
-                  v-model="time"
-                  :rules="[v => !!v || 'Time is required']"
-                  clearable
-                ></v-text-field>
-                <v-time-picker v-model="time" full-width format="24hr">
-                  <v-spacer></v-spacer>
-                  <v-btn flat color="primary" @click="timeModal = false"
-                    >Cancel</v-btn
+              <v-window-item :value="2">
+                <v-card-text>
+                  <v-dialog
+                    ref="date"
+                    v-model="dateModal"
+                    :return-value.sync="date"
+                    persistent
+                    lazy
+                    full-width
                   >
-                  <v-btn flat color="primary" @click="$refs.time.save(time)"
-                    >OK</v-btn
+                    <v-text-field
+                      box
+                      slot="activator"
+                      label="Set a date"
+                      readonly
+                      v-model="date"
+                      :rules="dateRules"
+                      clearable
+                    ></v-text-field>
+                    <v-date-picker
+                      full-width
+                      v-model="date"
+                      @input="$refs.date.save(date)"
+                    ></v-date-picker>
+                  </v-dialog>
+
+                  <v-dialog
+                    ref="time"
+                    v-model="timeModal"
+                    :return-value.sync="time"
+                    persistent
+                    lazy
+                    full-width
                   >
-                </v-time-picker>
-              </v-dialog>
-            </v-form>
-            <v-layout row wrap align-start>
-              <v-flex v-for="(img, i) in images" :key="i" d-flex xs12 md6>
-                <v-card>
-                  <v-img :src="img" class="grey darken-4"></v-img>
-                  <v-card-actions>
-                    <v-btn fab dark small @click="swap(i, 0)">
-                      <v-icon>arrow_back</v-icon>
-                    </v-btn>
-                    <v-btn fab dark small @click="swap(i, 2)">
-                      <v-icon>arrow_forward</v-icon>
-                    </v-btn>
-                    <v-spacer></v-spacer>
-                    <v-btn fab dark small color="red" @click="deleteImage(i)">
-                      <v-icon>delete</v-icon>
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-flex>
-            </v-layout>
-            <v-layout row class="mb-3">
-              <v-flex xs12>
-                <v-btn dark class="primary" @click="triggerUpload">
-                  Upload
-                  <v-icon right dark>cloud_upload</v-icon>
-                </v-btn>
-                <input
-                  ref="fileInput"
-                  type="file"
-                  style="display: none;"
-                  accept="image/*"
-                  @change="onFileChange"
-                  multiple
-                />
-              </v-flex>
-            </v-layout>
-            <v-layout row>
-              <v-flex xs12>
-                <v-spacer></v-spacer>
-                <v-btn
-                  :loading="loading"
-                  color="primary"
-                  @click="createCard"
-                  :disabled="!valid || loading"
-                >
-                  Update
-                </v-btn>
-              </v-flex>
-            </v-layout>
-          </v-card-text>
-        </v-card>
+                    <v-text-field
+                      box
+                      slot="activator"
+                      v-model="time"
+                      label="Set a time"
+                      readonly
+                      :rules="[v => !!v || 'Time is required']"
+                      clearable
+                    ></v-text-field>
+                    <v-time-picker v-model="time" full-width format="24hr">
+                      <v-spacer></v-spacer>
+                      <v-btn flat color="primary" @click="timeModal = false"
+                        >Cancel</v-btn
+                      >
+                      <v-btn flat color="primary" @click="$refs.time.save(time)"
+                        >OK</v-btn
+                      >
+                    </v-time-picker>
+                  </v-dialog>
+
+                  <v-text-field
+                    box
+                    name="people"
+                    label="Count people"
+                    type="text"
+                    v-model="people"
+                    :rules="peopleRules"
+                  ></v-text-field>
+
+                  <!-- <v-slider
+                    v-model="people"
+                    thumb-label
+                  >
+                  </v-slider> -->
+                </v-card-text>
+              </v-window-item>
+
+              <v-window-item :value="3">
+                <v-card-text>
+                  <!-- <v-flex xs12> -->
+                  <v-btn dark class="primary" @click="triggerUpload">
+                    Upload
+                    <v-icon right dark>cloud_upload</v-icon>
+                  </v-btn>
+                  <input
+                    ref="fileInput"
+                    type="file"
+                    style="display: none;"
+                    accept="image/*"
+                    @change="onFileChange"
+                    multiple
+                  />
+                  <!-- </v-flex> -->
+                </v-card-text>
+
+                <v-layout row wrap align-start>
+                  <v-flex v-for="(img, i) in images" :key="i" d-flex xs12 lg6>
+                    <v-card class="elevation-0">
+                      <v-img :src="img" class="grey darken-4"></v-img>
+                      <v-card-actions>
+                        <v-btn fab dark small @click="swap(i, 0)">
+                          <v-icon>arrow_back</v-icon>
+                        </v-btn>
+                        <v-btn fab dark small @click="swap(i, 2)">
+                          <v-icon>arrow_forward</v-icon>
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          fab
+                          dark
+                          small
+                          color="red"
+                          @click="deleteImage(i)"
+                        >
+                          <v-icon>delete</v-icon>
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-flex>
+                </v-layout>
+              </v-window-item>
+
+              <v-window-item :value="4">
+                <v-card-text>
+                  <map-marker
+                    v-if="location != null"
+                    @onLocation="setLocation"
+                    :position="location"
+                  />
+                </v-card-text>
+              </v-window-item>
+            </v-window>
+
+            <v-divider></v-divider>
+
+            <v-card-actions>
+              <v-btn flat color="accent" :disabled="step === 1" @click="step--">
+                Back
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="primary"
+                @click="step === 4 ? updateCard() : step++"
+              >
+                {{ step === 4 ? "Update" : "Next" }}
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-form>
       </v-flex>
     </v-layout>
   </v-container>
@@ -163,6 +191,7 @@
 
 <script>
 import imageCompression from "browser-image-compression";
+import MapMarker from "@/components/Cards/MapMarker";
 
 var swap = (a, x, y) => {
   if (a.length === 1) return a;
@@ -174,21 +203,29 @@ var swap = (a, x, y) => {
 };
 
 export default {
+  components: {
+    MapMarker
+  },
   props: {
     id: String
   },
   data() {
     return {
-      files: [],
+      step: 1,
+
       title: "",
       desc: "",
       people: "",
       images: [],
-      orderImg: [],
       time: null,
       timeModal: false,
       date: null,
       dateModal: false,
+
+      location: null,
+
+      orderImg: [],
+      files: [],
 
       valid: false,
       dateRules: [
@@ -211,13 +248,28 @@ export default {
     },
     single() {
       return this.$store.getters.get("single");
+    },
+    currentTitle() {
+      switch (this.step) {
+        case 1:
+          return "Update event";
+        case 2:
+          return "Date & members";
+        case 3:
+          return "Images";
+        default:
+          return "Location";
+      }
     }
     // complexImg () {
     //   return this.images.length ? this.images : this.single.img;
     // }
   },
   methods: {
-    async createCard() {
+    setLocation(location) {
+      this.location = location;
+    },
+    async updateCard() {
       await this.compressImages();
 
       var d = new Date((this.date + " " + this.time).replace(/-/g, "/"));
@@ -226,8 +278,9 @@ export default {
         var update = {
           title: this.title,
           desc: this.desc,
-          time: d,
-          people: this.people
+          time: d.getTime(),
+          people: this.people,
+          location: [this.location.lat, this.location.lng]
         };
 
         this.$store
@@ -307,17 +360,26 @@ export default {
       }
     }
   },
-  async created() {
+  async beforeMount() {
     await this.$store.dispatch("fetchSingle", { id: this.id }).then(() => {
       console.log(this.single);
       if (this.single) {
+        let single = this.single;
+        this.title = single.title;
+        this.desc = single.desc;
+        this.people = single.people;
         this.images = this.single.img;
 
-        if (this.single.time) {
-          let d = new Date(this.single.time);
-          this.time = d.toISOString().substr(11, 5);
-          this.date = d.toISOString().substr(0, 10);
-        }
+        let d = new Date(this.single.time);
+        this.time = d.toISOString().substr(11, 5);
+        this.date = d.toISOString().substr(0, 10);
+
+        let loc = this.single.location;
+        console.log(loc);
+        this.location = {
+          lat: loc[0],
+          lng: loc[1]
+        };
       }
     });
 

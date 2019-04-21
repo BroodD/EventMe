@@ -1,5 +1,5 @@
 <template>
-  <v-card class="round elevation-10" id="comments">
+  <v-card class="m-card elevation-10" id="comments">
     <v-card-title>
       <div class="headline">
         Comments <small class="primary--text">{{ length }}</small>
@@ -60,7 +60,12 @@
     </v-list>
 
     <v-card-actions>
-      <v-btn flat :disabled="pn <= 0" @click="fetchComments(false)">
+      <v-btn
+        flat
+        color="primary"
+        :disabled="pn <= 0"
+        @click="fetchComments(false)"
+      >
         <v-icon left>keyboard_arrow_left</v-icon>
         <span>Prev</span>
       </v-btn>
@@ -69,6 +74,7 @@
 
       <v-btn
         flat
+        color="primary"
         :disabled="length <= (pn + 1) * pz"
         @click="fetchComments(true)"
       >

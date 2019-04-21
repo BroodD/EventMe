@@ -23,14 +23,6 @@
 	@media only screen and (min-height: $height+'px')
 		@content
 
-=cover($x: null, $y: null, $cover:cover, $repeat:no-repeat)
-	background-repeat: $repeat
-	-webkit-background-size: $cover
-	-moz-background-size: $cover
-	-o-background-size: $cover
-	background-size: $cover
-	@if $x != null && $y != null
-		background-position: $x $y
 
 =bg-size($w:100%, $h:100%)
 	-moz-background-size: $w $h

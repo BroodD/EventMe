@@ -1,14 +1,10 @@
 <template>
-  <v-card class="mb-2 elevation-10 round">
-
-    <router-link 
+  <v-card class="mb-2 elevation-10 m-card">
+    <router-link
       v-if="Array.isArray(card.img) && card.img.length == 1"
       :to="'/card/' + card._id"
     >
-      <div
-        class="card__img"
-        
-      >
+      <div class="round__img">
         <v-img
           :src="card.img[0]"
           position="center"
@@ -46,13 +42,12 @@
           </v-avatar>
 
           <v-list-tile-content>
-            <v-list-tile-title>{{  card.user.login }}</v-list-tile-title>
+            <v-list-tile-title>{{ card.user.login }}</v-list-tile-title>
 
             <div class="d-flex align-center">
               <div class="text--small">{{ card.time | formatDate }}</div>
-              <div class="text--small ml-3" v-if="card.distance">{{ (card.distance / 1000).toFixed(2) }}km</div>
+              <!-- <div class="text--small ml-3" v-if="card.distance">{{ (card.distance / 1000).toFixed(2) }}km</div> -->
             </div>
-
           </v-list-tile-content>
         </router-link>
 
@@ -63,8 +58,8 @@
             <v-icon>edit</v-icon>
           </v-btn>
 
-          <v-dialog v-model="dialog" persistent max-width="320">
-            <v-btn slot="activator" fab dark small flat color="red">
+          <v-dialog v-model="dialog" max-width="320">
+            <v-btn slot="activator" fab dark small flat color="accent">
               <v-icon>close</v-icon>
             </v-btn>
             <v-card>
@@ -76,7 +71,7 @@
                 <v-btn color="green darken-1" flat @click="dialog = false"
                   >No</v-btn
                 >
-                <v-btn color="red darken-1" flat @click="delCard">Yes</v-btn>
+                <v-btn color="accent darken-1" flat @click="delCard">Yes</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -90,6 +85,14 @@
         <router-link :to="'/card/' + card._id">
           <div class="headline">{{ card.title }}</div>
         </router-link>
+
+        <v-spacer></v-spacer>
+
+        <div class="d-flex align-center">
+          <div class="primary--text" v-if="card.distance">
+            {{ (card.distance / 1000).toFixed(2) }}km
+          </div>
+        </div>
       </v-layout>
     </v-card-title>
 
@@ -180,7 +183,7 @@ export default {
       var h = obj.getHours() < 9 ? "0" + obj.getHours() : obj.getHours();
       var d = obj.getDate() < 9 ? "0" + obj.getDate() : obj.getDate();
       var m = obj.getMonth() < 9 ? "0" + obj.getMonth() : obj.getMonth();
-      var y = (obj.getFullYear() + "");
+      var y = obj.getFullYear() + "";
 
       var f;
 

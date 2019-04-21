@@ -23,11 +23,9 @@
 
 
 
-.round
+.round, .m-card, .round__img
+  overflow: hidden
   border-radius: 10px
-  &__img
-    border-radius: 10px
-    overflow: hidden
 
 .text
   &--small
@@ -38,14 +36,15 @@
 
 
 
-.v-card
-  &__title
-    padding-bottom: 0
-  &__text
-    padding-top: 0
-  &__actions .v-btn 
-    margin-left: 0
-    padding: 0 5px
+.m-card
+  .v-card
+    &__title
+      padding-bottom: 5px
+    &__text
+      padding-top: 0
+    &__actions .v-btn 
+      margin-left: 0
+      padding: 0 5px
 
 
 .theme

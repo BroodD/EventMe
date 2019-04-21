@@ -92,11 +92,12 @@
 
       <v-toolbar-items :class="isUserLoggedIn ? 'hidden-sm-and-down' : ''">
         <v-menu v-for="link in links" :key="link.title" :to="link.url" offset-y>
-          <v-btn 
-            flat 
+          <v-btn
+            flat
             color="primary"
-            slot="activator" 
-            :to="link.children ? '' : link.url">
+            slot="activator"
+            :to="link.children ? '' : link.url"
+          >
             <template v-if="link.icon">
               <v-icon left>{{ link.icon }}</v-icon>
               <span>{{ link.text }}</span>
@@ -170,6 +171,7 @@
         right
       >
         {{ error.msg || error }}
+        <!-- <v-btn v-if="error.btn" flat dark @click="error.btn.func">{{ error.btn.msg }}</v-btn> -->
         <v-btn flat dark @click.native="closeError">Close</v-btn>
       </v-snackbar>
     </template>

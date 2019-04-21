@@ -1,5 +1,5 @@
 <template>
-  <v-card class="round mb-2 elevation-10">
+  <v-card class="m-card mb-2 elevation-10">
     <v-card-title>
       <div class="headline">
         Members <small class="primary--text">{{ length }}</small>

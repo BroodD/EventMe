@@ -18,10 +18,12 @@ Vue.use(Router);
 export default new Router({
   mode: "history",
   base: process.env.BASE_URL,
-  saveScrollPosition: true,
+  // saveScrollPosition: true,
   scrollBehavior(to, from, savedPosition) {
-    // console.log('scrollBehavior() [to.path]', to, from, savedPosition)
+    // document.getElementById('app').scrollIntoView();
+    //     return null;
 
+    console.log("savedPosition, to.hash", savedPosition, to.hash);
     if (savedPosition) {
       return savedPosition;
     } else if (to.hash) {

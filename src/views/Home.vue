@@ -15,7 +15,7 @@ export default {
   mixins: [scroll],
   data() {
     return {
-      skip: 0
+      pn: 1
     };
   },
   computed: {
@@ -31,15 +31,9 @@ export default {
   },
   methods: {
     reload() {
-      console.log("reload", this.skip);
-      // this.$store.dispatch('fetchCards')
-      this.skip++;
+      this.$store.dispatch("fetchCards", this.pn);
+      this.pn++;
     }
   }
-  // beforeCreate () {
-  // 	console.log('create')
-  // 	this.$store.commit('loadCards', [])
-  // 	this.$store.dispatch('fetchCards')
-  // }
 };
 </script>

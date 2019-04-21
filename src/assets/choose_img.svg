@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 99 99">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="1" y1="0.022" x2="0" y2="0.948" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#3aada1"/>
+      <stop offset="1" stop-color="#4cc196"/>
+    </linearGradient>
+  </defs>
+  <g id="choose_img" transform="translate(-800 -419)">
+    <circle id="Ellipse_1" data-name="Ellipse 1" class="cls-1" cx="49.5" cy="49.5" r="49.5" transform="translate(800 419)"/>
+    <g id="photo-camera" transform="translate(820 438.5)">
+      <path id="Path_1" data-name="Path 1" class="cls-2" d="M55.2,15.5H46.677l-4-10H17.323l-4,10H12v-5H6v5H4.8A4.8,4.8,0,0,0,0,20.3V49.667A4.838,4.838,0,0,0,4.833,54.5H55.167A4.838,4.838,0,0,0,60,49.667V20.3A4.8,4.8,0,0,0,55.2,15.5ZM8,12.5h2v3H8ZM58,49.667A2.836,2.836,0,0,1,55.167,52.5H4.833A2.836,2.836,0,0,1,2,49.667V20.3a2.8,2.8,0,0,1,2.8-2.8h9.878l4-10H41.323l4,10H55.2A2.8,2.8,0,0,1,58,20.3V49.667Z"/>
+      <path id="Path_2" data-name="Path 2" class="cls-2" d="M30,14.5a18,18,0,1,0,18,18A18.021,18.021,0,0,0,30,14.5Zm0,34a16,16,0,1,1,16-16A16.019,16.019,0,0,1,30,48.5Z"/>
+      <path id="Path_3" data-name="Path 3" class="cls-2" d="M30,20.5a12,12,0,1,0,12,12A12.013,12.013,0,0,0,30,20.5Zm0,22a10,10,0,1,1,10-10A10.011,10.011,0,0,1,30,42.5Z"/>
+      <path id="Path_4" data-name="Path 4" class="cls-2" d="M52,19.5a4,4,0,1,0,4,4A4,4,0,0,0,52,19.5Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,52,25.5Z"/>
+    </g>
+  </g>
+</svg>

@@ -29,15 +29,13 @@ export class Cards {
 }
 
 export class CardMongo {
-  constructor(title, desc, user, time, people, comments, create, img = null) {
+  constructor(title, desc, user, time, people, location) {
     this.title = title;
     this.desc = desc;
     this.user = user;
     this.time = time;
     this.people = people;
-    this.comments = comments;
-    this.create = create;
-    this.img = img || [];
+    this.location = location;
   }
 }
 

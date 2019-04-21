@@ -2,10 +2,10 @@ import api from "@/services/api";
 
 export default {
   fetchCards(params) {
-    return api().put("cards", params);
+    return api().get("cards", { params: params });
   },
   findById(params) {
-    return api().put(`card/${params.id}`, params);
+    return api().get(`card/${params.id}`, { params: params });
   },
   addNewCard(params) {
     return api().post("card", params);
@@ -23,9 +23,10 @@ export default {
     return api().put(`card/comment/${params.id}`, params);
   },
   fetchMembers(params) {
-    return api().put(`card/members/${params.id}`, params);
+    console.log("members", params);
+    return api().get(`card/members/${params.id}`, { params: params });
   },
   fetchComments(params) {
-    return api().put(`card/comments/${params.id}`, params);
+    return api().get(`card/comments/${params.id}`, { params: params });
   }
 };

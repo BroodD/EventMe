@@ -18,16 +18,16 @@ Vue.use(Vuetify, {
     // primary: '#051937'
     // primary: '#37859F',
     // primary: '#3AAF9F',
-    primary: "#3AAF9F",
-    secondary: '#CDD3DA', 
 
-    accent: '#FF8A65',
+    primary: "#3AAF9F",
+    secondary: "#CDD3DA",
+    accent: "#FF8A65",
+    error: "#D73222"
+
     // error: '#FF5252',
     // info: '#2196F3',
     // success: '#4CAF50',
     // warning: '#FFC107'
-
-    error: "#D73222"
   },
   directives
 });

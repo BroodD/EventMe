@@ -39,8 +39,7 @@ export default {
           getters.userId,
           payload.time,
           payload.people,
-          0,
-          -Date.now()
+          payload.location
         );
 
         const response = await CardsService.addNewCard(newCard);
@@ -81,10 +80,10 @@ export default {
       commit("clearError");
       commit("setLoading", true);
 
-      var uid = getters.userId;
+      var userId = getters.userId;
 
       try {
-        if (uid === ownerId) {
+        if (userId === ownerId) {
           await CardsService.deleteCard({ id: id, user_id: userId });
 
           if (images) {
@@ -198,14 +197,16 @@ export default {
         throw error;
       }
     },
-    async fetchCards({ commit, getters }, skip) {
+    async fetchCards({ commit, getters }, pn) {
       commit("clearError");
       commit("setLoading", true);
 
       try {
+        console.log(pn, getters.get("position"));
         const response = await CardsService.fetchCards({
           user_id: getters.userId,
-          position: getters.get("position")
+          position: getters.get("position"),
+          pn
         });
         const resultCards = response.data.cards;
 
