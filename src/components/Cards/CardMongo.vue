@@ -1,7 +1,8 @@
 <template>
   <v-card class="mb-2 elevation-10 m-card">
+      <!-- v-if="Array.isArray(card.img) && card.img.length == 1" -->
     <router-link
-      v-if="Array.isArray(card.img) && card.img.length == 1"
+      v-if="Array.isArray(card.img)"
       :to="'/card/' + card._id"
     >
       <div class="round__img">
@@ -15,7 +16,7 @@
       </div>
     </router-link>
 
-    <v-layout v-else-if="Array.isArray(card.img) && card.img.length > 1">
+    <!-- <v-layout v-else-if="Array.isArray(card.img) && card.img.length > 1">
       <v-flex class="py-0">
         <div class="round__img elevation-10">
           <v-carousel>
@@ -28,7 +29,7 @@
           </v-carousel>
         </div>
       </v-flex>
-    </v-layout>
+    </v-layout> -->
 
     <v-list>
       <v-list-tile avatar>

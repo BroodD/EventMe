@@ -9,7 +9,11 @@
           <v-tab-item :transition="false" :reverse-transition="false">
             <v-card class="elevation-12">
               <v-card-text>
-                <v-form v-model="valid" ref="form" lazy-validation>
+                <v-form 
+                  v-model="valid" 
+                  ref="form" lazy-validation 
+                  @submit.prevent="onSubmit"
+                  id="form">
                   <v-layout row>
                     <v-flex md4 lg6 class="mb-4">
                       <v-dialog v-model="dialog" max-width="450px">
@@ -117,11 +121,12 @@
                 <v-spacer></v-spacer>
                 <v-btn
                   color="primary"
-                  @click="onSubmit"
                   :loading="loading"
                   :disabled="!valid || loading"
-                  >Update</v-btn
-                >
+                  type="submit"
+                  form="form"
+                >Update</v-btn>
+                  <!-- @click="onSubmit" -->
               </v-card-actions>
             </v-card>
           </v-tab-item>
@@ -169,7 +174,7 @@ export default {
       image: "",
       imageSrc: "",
       login: "",
-      name: "",
+      // name: "",
       bio: "",
       email: "",
       // gender: '',
@@ -264,7 +269,7 @@ export default {
       if (this.$refs.form.validate()) {
         const user = {
           login: this.login || this.user.login,
-          name: this.name || this.user.name,
+          // name: this.name || this.user.name,
           image: this.image || this.user.img,
           bio: this.bio || this.user.bio,
           email: this.email || this.user.email
@@ -274,7 +279,7 @@ export default {
         this.$store
           .dispatch("changeUserInfo", user)
           .then(() => {
-            // this.$router.push('/user/' + this.$store.getters.user.id)
+            this.$router.push('/user/' + this.$store.getters.user._id)
           })
           .catch(() => {});
       }

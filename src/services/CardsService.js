@@ -23,7 +23,6 @@ export default {
     return api().put(`card/comment/${params.id}`, params);
   },
   fetchMembers(params) {
-    console.log("members", params);
     return api().get(`card/members/${params.id}`, { params: params });
   },
   fetchComments(params) {

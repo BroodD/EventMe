@@ -1,5 +1,6 @@
 <template>
-  <v-container grid-list-md id="my" v-scroll:#scroll-target="onScroll">
+  <v-container grid-list-md id="my" v-scroll:#scroll-target="onScroll" v-if="user.img">
+
     <v-layout row wrap justify-center>
       <v-flex sm5 lg3 mb-5 class="text-center">
         <v-avatar size="200">
@@ -13,28 +14,28 @@
           </v-flex>
           <v-spacer></v-spacer>
 
-          <v-flex>
+          <!-- <v-flex>
             <v-btn color="primary" @click="toggFollow">
               <span>{{ user.follow ? "Following" : "Follow" }}</span>
               <v-icon right>{{ user.follow ? "check" : "star" }}</v-icon>
             </v-btn>
           </v-flex>
-          <v-spacer></v-spacer>
+          <v-spacer></v-spacer> -->
         </v-layout>
 
         <h3>{{ user.name }}</h3>
         <p class="mt-3 pre">{{ user.bio }}</p>
         <v-layout row wrap>
-          <v-flex>
+          <!-- <v-flex>
             <strong>{{ userCards.length }}</strong> cards
           </v-flex>
-          <v-spacer></v-spacer>
+          <v-spacer></v-spacer> -->
 
-          <v-flex> <strong>12k</strong> followers </v-flex>
+          <!-- <v-flex> <strong>12k</strong> followers </v-flex>
           <v-spacer></v-spacer>
 
           <v-flex> <strong>5,805</strong> following </v-flex>
-          <v-spacer></v-spacer>
+          <v-spacer></v-spacer> -->
         </v-layout>
       </v-flex>
     </v-layout>
@@ -70,9 +71,9 @@ export default {
         return this.$store.getters.otherUser;
       return this.$store.getters.user;
     },
-    loading() {
-      return this.$store.getters.loading;
-    }
+    // loading() {
+    //   return this.$store.getters.loading;
+    // }
   },
   methods: {
     toggFollow() {
@@ -91,7 +92,6 @@ export default {
       await this.$store.dispatch("otherUser", this.id);
 
     // if(!this.cards) {
-    console.log("User beforeCreate if true [cards]", this.cards);
     this.$store.commit("set", { v: "userCards", val: [] });
     this.$store.dispatch("userCards", { id: this.id });
     // }

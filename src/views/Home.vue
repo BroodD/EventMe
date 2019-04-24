@@ -1,5 +1,6 @@
 <template>
   <v-container grid-list-md id="my" v-scroll:#scroll-target="onScroll">
+    <div>{{ scroll }}</div>
     <v-layout row wrap justify-center class="card-wrap">
       <v-flex xs12 md8 v-for="card in cards" :key="card._id">
         <CardMongo :card="card" />
@@ -22,17 +23,19 @@ export default {
     cards() {
       return this.$store.getters.cards;
     },
-    userId() {
-      return this.$store.getters.userId;
-    },
-    loading() {
-      return this.$store.getters.loading;
-    }
+    // userId() {
+    //   return this.$store.getters.userId;
+    // },
+    // loading() {
+    //   return this.$store.getters.loading;
+    // }
   },
   methods: {
     reload() {
-      this.$store.dispatch("fetchCards", this.pn);
-      this.pn++;
+      // if(this.scroll) {
+        this.$store.dispatch("fetchCards", this.pn);
+        this.pn++;
+      // }
     }
   }
 };

@@ -202,7 +202,6 @@ export default {
       commit("setLoading", true);
 
       try {
-        console.log(pn, getters.get("position"));
         const response = await CardsService.fetchCards({
           user_id: getters.userId,
           position: getters.get("position"),
@@ -222,12 +221,11 @@ export default {
       commit("clearError");
       commit("setLoading", true);
 
-      console.log("fetchSingle [id]", id);
-
       try {
         const response = await CardsService.findById({
           id: id,
-          user_id: getters.userId
+          user_id: getters.userId,
+          position: getters.get("position")
         });
         const resultCards = response.data.card[0];
 
@@ -277,7 +275,6 @@ export default {
       try {
         if (user_id) {
           // type true -- like
-          console.log(id, has, user_id);
           await CardsService.updateLikeVisitCard({
             id,
             has,

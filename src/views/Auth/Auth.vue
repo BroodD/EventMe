@@ -66,12 +66,10 @@
                   round
                   large
                   flat
-                  :disabled="loading"
                   :loading="loading"
                   type="submit"
                   form="form-log"
-                  >Sing in</v-btn
-                >
+                >Sing in</v-btn>
               </v-card-text>
             </v-card>
           </v-flex>
@@ -85,7 +83,7 @@
                   v-model="valid"
                   ref="formReg"
                   validation
-                  @submit.prevent="onLogin"
+                  @submit.prevent="onRegistration"
                   id="form-reg"
                 >
                   <v-dialog v-model="dialog" max-width="450px">
@@ -138,8 +136,10 @@
                     :size="120"
                     @click="avatarClick"
                   >
-                    <img :src="cropImg" alt="avatar" />
+                    <img :src="cropImg" alt="avatar" :style="{ border: !image && valid ? '4px solid tomato' : '' }" />
                   </v-avatar>
+
+                  <!-- <div v-if="!hasImage && valid">select image</div> -->
 
                   <v-text-field
                     box
@@ -177,9 +177,9 @@
                   round
                   large
                   flat
-                  :disabled="loading"
+                  :loading="loading"
                   type="submit"
-                  form="form-log"
+                  form="form-reg"
                   >Sing up</v-btn
                 >
               </v-card-text>
@@ -208,7 +208,7 @@ export default {
       cropImg: require("@/assets/choose_img.svg"),
 
       login: "",
-      name: "",
+      // name: "",
       password: "",
       email: "test@gmail.com",
       password: "testtest",

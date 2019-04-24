@@ -20,9 +20,9 @@ export default {
     return api().delete(`user/${params.id}`);
   },
   userCards(params) {
-    return api().put(`user/cards/${params.id}`, params);
+    return api().get(`user/cards/beta/${params.id}`, { params: params });
   },
   visitCards(params) {
-    return api().put(`user/visit/${params.id}`, params);
+    return api().get(`user/visit/${params.id}`, { params: params });
   }
 };

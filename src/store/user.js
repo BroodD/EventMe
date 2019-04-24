@@ -49,7 +49,7 @@ export default {
           const userFb = await firebase
             .auth()
             .createUserWithEmailAndPassword(email, password);
-          const key = userfirebase.user.uid;
+          const key = userFb.user.uid;
 
           // some stuff with img
           let imageSrc;
@@ -126,19 +126,10 @@ export default {
         // 	await firebase.auth().currentUser.updateEmail(email)
         // }
 
-        console.log(
-          "changeInfo login, name, image, bio, email",
-          login,
-          name,
-          image,
-          bio,
-          email
-        );
-
         var imageSrc;
         if (typeof image == "object") {
           // get old image
-          let img = getters.user.img;
+          let img = user.img;
           let indq = img.indexOf("?");
           let inde = img.lastIndexOf("users%2F", indq) + 8;
           let name = img.slice(inde, indq);
@@ -153,15 +144,9 @@ export default {
 
           // put new image
           var imageExt = image.type.slice(image.type.lastIndexOf("/") + 1);
-          console.log(
-            "changeUser [image, name, imageExt]",
-            image,
-            name,
-            imageExt
-          );
           await firebase
             .storage()
-            .ref(`users/${user.id}.${imageExt}`)
+            .ref(`users/${user._id}.${imageExt}`)
             .put(image)
             .then(snapshot => snapshot.ref.getDownloadURL())
             .then(url => (imageSrc = url));
@@ -173,8 +158,7 @@ export default {
         const responce = await UsersService.findByLoginMin({ login: login });
 
         // if userId != user.id where login is this.login
-        if (responce.data.user._id == user._id) {
-          console.log("changeUser beforeUpdate [imageSrc]", imageSrc);
+        if ( responce.data.user == null || responce.data.user._id == user._id) {
 
           await UsersService.updateUser({
             id: user._id,
@@ -204,13 +188,13 @@ export default {
     },
     async otherUser({ commit, getters }, id) {
       console.log("otherUser [id]", id);
-      const responce = await UsersService.findByFbId({ id: id });
+      const responce = await UsersService.findById({ id: id });
       const user = responce.data.user;
 
       commit("setOtherUser", user);
     },
 
-    async userCards({ commit, getters }, { id }) {
+    async userCards({ commit, getters }, { id, pn }) {
       commit("clearError");
       commit("setLoading", true);
 
@@ -220,7 +204,9 @@ export default {
         var resultCards = [];
         const responce = await UsersService.userCards({
           id,
-          user_id: getters.userId
+          // user_id: getters.userId,
+          position: getters.get("position"),
+          pn
         });
 
         if (responce.data.cards) {
@@ -238,7 +224,7 @@ export default {
         throw error;
       }
     },
-    async visitCards({ commit, getters }) {
+    async visitCards({ commit, getters }, pn) {
       commit("clearError");
       commit("setLoading", true);
 
@@ -246,13 +232,16 @@ export default {
 
       try {
         var id = getters.userId;
-        var resultCards = [];
-        const responce = await UsersService.visitCards({ id, user_id: id });
+        console.log(id);
+        const responce = await UsersService.visitCards({ 
+          id, 
+          // user_id: id,
+          position: getters.get("position"),
+          pn
+        });
 
         if (responce.data.cards) {
-          resultCards = responce.data.cards;
-          console.log(resultCards);
-          commit("set", { v: "visitCards", val: resultCards });
+          commit("set", { v: "visitCards", val: responce.data.cards });
         }
 
         // resultCards = resultCards.concat(getters.get('userCards'))

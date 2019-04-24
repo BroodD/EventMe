@@ -138,7 +138,7 @@
         </v-layout>
       </v-container> -->
 
-    <v-content id="scroll-target" style="max-height: 100vh" class="scroll-y">
+    <v-content id="scroll-target" style="max-height: 100vh" class="scroll-y overflow-x-hidden">
       <!-- <transition name="fade" mode="out-in" @before-enter="beforeEnter" appear> -->
       <router-view></router-view>
       <!-- </transition> -->
