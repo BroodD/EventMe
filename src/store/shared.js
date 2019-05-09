@@ -7,7 +7,10 @@ export default {
   },
   mutations: {
     setLoading(state, payload) {
-      state.loading = payload;
+      if(!payload)
+        setTimeout(() => state.loading = false, 1000)
+      else
+        state.loading = payload;
     },
     setError(state, payload) {
       state.error = payload;

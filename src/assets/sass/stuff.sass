@@ -1,7 +1,10 @@
 html
-  overflow: hidden !important
+  // overflow: hidden !important
 body
   overflow-x: hidden
+
+.user-logined
+  padding-top: 64px
 
 
 
@@ -48,6 +51,14 @@ a
   margin: 0
   max-width: 350px
 
+.v-progress-linear
+  position: fixed
+  top: 0
+  left: 0
+  margin: 0
+  z-index: 2
+  
+
 // .dialog
 //  .v-dialog__activator
 
@@ -78,8 +89,10 @@ a
 
 
 +w(960)
-  .v-content__wrap > .container 
-    padding-bottom: 60px !important
+  .user-logined
+    padding: 48px 0 47px 0
+// .v-content__wrap > .container 
+//   padding: 60px 0 !important
   
 
 +w(560) 

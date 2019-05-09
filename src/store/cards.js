@@ -7,21 +7,33 @@ import CardsService from "@/services/CardsService";
 export default {
   state: {
     cards: [],
-    end: null,
-    userEnd: null,
-    visitEnd: null,
     single: null,
 
-    userCards: [],
-    visitCards: []
+    scrollHome: 0,
+    pageNumHome: 0,
+
+    currentState: 'home'
+
+    // userCards: [],
+    // visitCards: []
   },
   mutations: {
-    createCard(state, payload) {
-      state.cards.unshift(payload);
-    },
+    // createCard(state, payload) {
+    //   state.cards.unshift(payload);
+    // },
     loadCards(state, payload) {
       state.cards = state.cards.concat(payload);
       // state.cards = payload
+    },
+    clearCards(state, payload) {
+      state.cards = []
+      // state.scrollHome = 0
+      // state.pageNum  = 0
+    },
+    setScrollAndPageNum(state, payload) {
+      console.log('setScrollAndPageNum ----------------', payload.scroll, payload.pageNum);
+      state.scrollHome = payload.scroll;
+      state.pageNumHome = payload.pageNum;
     },
     set(state, { v, val }) {
       state[v] = val;
@@ -75,7 +87,6 @@ export default {
         throw error;
       }
     },
-
     async deleteCard({ commit, getters }, { id, ownerId, images }) {
       commit("clearError");
       commit("setLoading", true);
@@ -197,19 +208,22 @@ export default {
         throw error;
       }
     },
-    async fetchCards({ commit, getters }, pn) {
+    async fetchCards({ commit, getters }, { scroll, pageNum }) {
       commit("clearError");
       commit("setLoading", true);
 
+      console.log('fetchCards [scroll, pageNum]', scroll, pageNum);
+
       try {
         const response = await CardsService.fetchCards({
-          user_id: getters.userId,
+          userId: getters.userId,
           position: getters.get("position"),
-          pn
+          pageNum
         });
-        const resultCards = response.data.cards;
+        // const resultCards = response.data.cards;
 
-        commit("loadCards", resultCards);
+        commit('setScrollAndPageNum', { scroll, pageNum: pageNum + 1 });
+        commit("loadCards", response.data.cards);
         commit("setLoading", false);
       } catch (error) {
         commit("setError", error.message);
@@ -224,7 +238,7 @@ export default {
       try {
         const response = await CardsService.findById({
           id: id,
-          user_id: getters.userId,
+          userId: getters.userId,
           position: getters.get("position")
         });
         const resultCards = response.data.card[0];

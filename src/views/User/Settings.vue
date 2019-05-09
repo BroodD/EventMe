@@ -117,17 +117,20 @@
 									></v-select> -->
                 </v-form>
               </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
+              <!-- <v-card-actions> -->
+                <!-- <v-spacer></v-spacer> -->
                 <v-btn
                   color="primary"
                   :loading="loading"
                   :disabled="!valid || loading"
                   type="submit"
                   form="form"
+                  block
+                  depressed
+                  large
                 >Update</v-btn>
                   <!-- @click="onSubmit" -->
-              </v-card-actions>
+              <!-- </v-card-actions> -->
             </v-card>
           </v-tab-item>
           <v-tab-item :transition="false" :reverse-transition="false">

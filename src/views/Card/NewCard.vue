@@ -115,7 +115,14 @@
               <v-window-item :value="3">
                 <v-card-text>
                   <!-- <v-flex xs12> -->
-                  <v-btn dark class="primary" @click="triggerUpload">
+                  <v-btn 
+                    block
+                    depressed
+                    large
+                    dark 
+                    class="primary" 
+                    @click="triggerUpload"
+                  >
                     Upload
                     <v-icon right dark>cloud_upload</v-icon>
                   </v-btn>
@@ -187,7 +194,7 @@
 
 <script>
 import imageCompression from "browser-image-compression";
-import MapMarker from "@/components/Cards/MapMarker";
+import MapMarker from "@/components/MapMarker";
 
 var swap = (a, x, y) => {
   if (a.length === 1) return a;

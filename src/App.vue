@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app :class="{'user-logined': isUserLoggedIn}">
     <v-navigation-drawer
       app
       temporary
@@ -64,7 +64,8 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar app scroll-toolbar-off-screen v-if="isUserLoggedIn">
+    <!-- <v-toolbar app scroll-off-screen v-if="isUserLoggedIn"> -->
+    <v-toolbar app v-if="isUserLoggedIn">
       <v-toolbar-side-icon
         @click="drawer = !drawer"
         class="hidden-md-and-up"
@@ -126,6 +127,13 @@
       </v-toolbar-items>
     </v-toolbar>
 
+    <v-progress-linear 
+      v-if="loading"
+      color="primary" 
+      height="2" 
+      indeterminate
+    ></v-progress-linear>
+
     <!-- <v-container
       >
         <v-layout
@@ -138,11 +146,12 @@
         </v-layout>
       </v-container> -->
 
-    <v-content id="scroll-target" style="max-height: 100vh" class="scroll-y overflow-x-hidden">
+    <!-- <v-content id="scroll-target" style="max-height: 100vh" class="scroll-y overflow-x-hidden"> -->
+    <!-- <v-content> -->
       <!-- <transition name="fade" mode="out-in" @before-enter="beforeEnter" appear> -->
       <router-view></router-view>
       <!-- </transition> -->
-    </v-content>
+    <!-- </v-content> -->
 
     <!-- :active.sync="bottomNav" -->
     <v-bottom-nav
@@ -189,7 +198,7 @@ export default {
   },
   computed: {
     loading() {
-      this.$store.getters.loading;
+      return this.$store.getters.loading;
     },
     user() {
       return this.$store.getters.user;

@@ -11,11 +11,13 @@ import Single from "@/views/Card/Single";
 import NewCard from "@/views/Card/NewCard";
 import Edit from "@/views/Card/Edit";
 
-import Test from "@/views/Test";
+
+var fb = require("firebase/app");
+require("firebase/auth");
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: "history",
   // base: process.env.BASE_URL,
   // saveScrollPosition: true,
@@ -23,12 +25,12 @@ export default new Router({
     // document.getElementById('app').scrollIntoView();
     //     return null;
 
-    console.log("savedPosition, to.hash", savedPosition, to.hash);
-    // if (savedPosition !== null) {
-    //   return savedPosition;
-    // } else if (to.hash) {
-    //   return { selector: to.hash };
-    // }
+    // console.log("savedPosition, to.hash", savedPosition, to.hash);
+    if (savedPosition !== null) {
+      return savedPosition;
+    } else if (to.hash) {
+      return { selector: to.hash };
+    }
 
     return {
       x: 0,
@@ -46,7 +48,8 @@ export default new Router({
     {
       path: "/",
       name: "home",
-      component: Home
+      component: Home,
+      // meta: { requiresAuth: true }
     },
     {
       path: "/auth",
@@ -91,13 +94,20 @@ export default new Router({
       beforeEnter: AuthGuard
     },
     {
-      path: "/test",
-      name: "test",
-      component: Test
-    },
-    {
       path: "*",
       redirect: "/"
     }
   ]
 });
+
+// router.beforeEach((to, from, next) => {
+//   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+//   const isAuthenticated = fb.auth().currentUser
+//   if (requiresAuth && !isAuthenticated) {
+//     next('/settings')
+//   } else {
+//     next()
+//   }
+// })
+
+export default router

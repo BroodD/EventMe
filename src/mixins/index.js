@@ -1,20 +1,72 @@
 export var scroll = {
   data() {
     return {
-      scroll: 0
+      scroll: this.$store.getters.get('scrollHome')
+      // scroll: 0
     };
   },
+  computed: {
+    scrollState () {
+      return this.$store.getters.get('scrollHome')
+    }
+  },
   methods: {
+    // onScroll(e) {
+    //   var contentHeight  = document.documentElement.offsetHeight, // all height
+    //       heightToScroll = window.innerHeight, // two window height
+    //       scrollTop      = document.documentElement.scrollTop + window.innerHeight; // current scroll
+
+    //   console.log(contentHeight, scrollTop, contentHeight - scrollTop, this.scrollState, this.scroll)
+    //   // if (
+    //   //   scrollTop > this.scrollState &&
+    //   //   scrollTop > contentHeight - heightToScroll && 
+    //   //   !this.loading
+    //   // ) {
+    //   if (
+    //     scrollTop > this.scroll &&
+    //     contentHeight - scrollTop < 100 && 
+    //     !this.loading
+    //   ) {
+    //     console.log('reload', this.scroll);
+
+    //     // this.scroll = scrollTop + heightToScroll;
+    //     this.scroll = scrollTop;
+
+    //     // this.$store.commit('setScrollAndPageNum', { scroll: this.scroll, pageNum: this.pageNum });
+    //     this.reload({ scroll: this.scroll });
+    //   }
+    // }
     onScroll(e) {
-      var contentHeight = document.querySelector("#my");
-      var top = e.target.scrollTop;
-      if (
-        top > this.scroll &&
-        top >= contentHeight.clientHeight - e.target.offsetHeight * 2
+      var contentHeight  = document.documentElement.offsetHeight, // all height
+          heightToScroll = window.innerHeight / 4, // 1/n window height
+          scrollTop      = document.documentElement.scrollTop + window.innerHeight; // current scroll
+
+
+      // console.log(contentHeight, scrollTop)
+      this.scroll = document.documentElement.scrollTop;
+
+      if ( 
+        scrollTop >= contentHeight - heightToScroll &&
+        scrollTop > this.scrollState &&
+        this.loading == false
       ) {
-        this.scroll = top + e.target.offsetHeight * 2;
-        this.reload();
+        var scroll = Math.max(scrollTop + heightToScroll, contentHeight);
+        // var scroll = scrollTop + heightToScroll > contentHeight ? contentHeight : scrollTop + heightToScroll;
+        this.reload({ scroll });
       }
+
+      // if (
+      //   scrollTop > this.scroll &&
+      //   scrollTop >= contentHeight - heightToScroll && 
+      //   !this.loading
+      // ) {
+      //   // console.log('reload', this.scroll);
+
+      //   this.scroll = scrollTop + heightToScroll;
+
+      //   this.reload({ scroll: scrollTop });
+      //   // console.log(contentHeight, scrollTop, heightToScroll, this.scrollState, this.scroll)
+      // }
     }
   }
 };

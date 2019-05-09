@@ -191,7 +191,7 @@
 
 <script>
 import imageCompression from "browser-image-compression";
-import MapMarker from "@/components/Cards/MapMarker";
+import MapMarker from "@/components/MapMarker";
 
 var swap = (a, x, y) => {
   if (a.length === 1) return a;

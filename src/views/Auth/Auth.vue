@@ -27,7 +27,7 @@
         </v-flex>
 
         <transition name="flip">
-          <v-flex v-if="state" key="in" md6 lg4 pa-0>
+          <v-flex v-if="state" key="in" sm6 lg4 pa-0>
             <v-card class="elevation-0 h-100 d-flex align-center">
               <v-card-text class="text-center">
                 <h2 class="fz-40 primary--text">Sing in to EventMe</h2>
@@ -209,7 +209,6 @@ export default {
 
       login: "",
       // name: "",
-      password: "",
       email: "test@gmail.com",
       password: "testtest",
       emailRules: [

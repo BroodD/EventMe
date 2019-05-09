@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list-md id="my" v-scroll:#scroll-target="onScroll">
+  <v-container grid-list-md v-scroll="onScroll">
     <v-layout row wrap justify-center class="card-wrap">
       <v-flex xs12 md8 v-for="card in cards" :key="card._id">
         <CardMongo :card="card" />
@@ -21,27 +21,47 @@ import { scroll } from "@/mixins/index";
 
 export default {
   mixins: [scroll],
+  // data () {
+  //   return {
+  //     // scroll: this.$store.getters.get('scrollHome'),
+  //     pageNum: this.$store.getters.get('pageNumHome')
+  //   };
+  // },
   computed: {
-    cards() {
-      return this.$store.getters.get("visitCards");
+    cards () {
+      return this.$store.getters.cards
     },
-    loading() {
+    loading () {
       return this.$store.getters.loading;
+    },
+    pageNum () {
+      return this.$store.getters.get('pageNumHome')
     }
   },
   methods: {
-    reload() {
-      // var endAt = this.$store.getters.get('visitEnd')
-      // if(endAt)
-      // 	this.$store.dispatch('fetchVisit', endAt)
-      // else
-      // 	this.$store.dispatch('setError', { msg: 'No more cards', color: 'orange' })
+    reload ({ scroll }) {
+      // this.pageNum++;
+      console.log('reload visit -----------', scroll, this.pageNum);
+      this.$store.dispatch("visitCards", { scroll, pageNum: this.pageNum });
     }
   },
-  async beforeMount() {
-    if (!this.cards.length) {
-      this.$store.commit("set", { v: "visitCards", val: [] });
-      this.$store.dispatch("visitCards");
+  async beforeMount () {
+    var currentState = this.$store.getters.get('currentState')
+
+    // window.scrollTo({
+    //     top: this.scroll,
+    //     behavior: "smooth"
+    // });
+
+    if (currentState != "visit" && this.$store.getters.isUserLoggedIn) {
+      console.log('visit beforeMount', currentState)
+      // this.$store.commit("set", { v: "cards", val: [] });
+      this.$store.commit("clearCards");
+      this.$store.commit("set", { v: "currentState", val: "visit" })
+      this.$store.dispatch("visitCards", { scroll: 0, pageNum: 0 });
+      // this.$store.commit('setScrollAndPageNum', { scroll: 0, pageNum: 0 });
+    } else {
+      // this.$vuetify.goTo(this.scrollState, { duration: 0 })
     }
   }
 };

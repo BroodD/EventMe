@@ -9,9 +9,13 @@
         <v-img
           :src="card.img[0]"
           position="center"
-          max-height="400px"
-          class="elevation-10 auto"
+          aspect-ratio="1.7778"
+          transition="slide-y-reverse-transition"
         >
+          <!-- transition="scale-transition" -->
+          <!-- gradient="to top right, rgba(38,38,38,.33), rgba(0,0,0,.7)" -->
+          <!-- class="elevation-5" -->
+          <!-- class="elevation-10 auto" -->
         </v-img>
       </div>
     </router-link>
@@ -89,11 +93,13 @@
 
         <v-spacer></v-spacer>
 
-        <div class="d-flex align-center">
-          <div class="primary--text" v-if="card.distance">
-            {{ (card.distance / 1000).toFixed(2) }}km
+        <template v-if="card.distance">
+          <div class="d-flex align-center">
+            <div class="primary--text">
+              {{ (card.distance / 1000).toFixed(2) }}km
+            </div>
           </div>
-        </div>
+        </template>
       </v-layout>
     </v-card-title>
 
@@ -102,6 +108,13 @@
     <v-divider></v-divider>
 
     <v-card-actions>
+      <template v-if="card.distance">
+          <div class="d-flex align-center">
+            <div class="primary--text">
+              {{ (card.distance / 1000).toFixed(2) }}km
+            </div>
+          </div>
+        </template>
       <v-spacer></v-spacer>
 
       <v-btn flat :color="card.hasVisit ? 'red' : ''" @click="toggVisit()">

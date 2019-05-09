@@ -224,28 +224,22 @@ export default {
         throw error;
       }
     },
-    async visitCards({ commit, getters }, pn) {
+    async visitCards({ commit, getters }, { scroll, pageNum }) {
       commit("clearError");
       commit("setLoading", true);
 
-      // console.log('userCards [id, user, endAt]', id, user, endAt)
+      console.log('fetchCards [scroll, pageNum]', scroll, pageNum);
 
       try {
         var id = getters.userId;
-        console.log(id);
-        const responce = await UsersService.visitCards({ 
+        const response = await UsersService.visitCards({ 
           id, 
-          // user_id: id,
           position: getters.get("position"),
-          pn
+          pageNum
         });
 
-        if (responce.data.cards) {
-          commit("set", { v: "visitCards", val: responce.data.cards });
-        }
-
-        // resultCards = resultCards.concat(getters.get('userCards'))
-        // commit('set', { v: 'userEnd', val: end[0] })
+        commit('setScrollAndPageNum', { scroll, pageNum: pageNum + 1 });
+        commit("loadCards", response.data.cards);
         commit("setLoading", false);
       } catch (error) {
         commit("setError", error.message);
