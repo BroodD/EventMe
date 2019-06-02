@@ -1,18 +1,18 @@
-import firebase from "firebase/app";
-require("firebase/storage");
+import firebase from 'firebase/app';
+require('firebase/storage');
 
-import { Cards, CardMongo } from "@/mixins/class";
-import CardsService from "@/services/CardsService";
+import { CardMongo } from '@/mixins/class';
+import CardsService from '@/services/CardsService';
 
 export default {
   state: {
     cards: [],
     single: null,
 
-    scrollHome: 0,
-    pageNumHome: 0,
+    scroll: 0,
+    pageNum: 0,
 
-    currentState: 'home'
+    currentState: ''
 
     // userCards: [],
     // visitCards: []
@@ -25,15 +25,14 @@ export default {
       state.cards = state.cards.concat(payload);
       // state.cards = payload
     },
-    clearCards(state, payload) {
-      state.cards = []
-      // state.scrollHome = 0
+    clearCards(state) {
+      state.cards = [];
+      // state.scroll = 0
       // state.pageNum  = 0
     },
-    setScrollAndPageNum(state, payload) {
-      console.log('setScrollAndPageNum ----------------', payload.scroll, payload.pageNum);
-      state.scrollHome = payload.scroll;
-      state.pageNumHome = payload.pageNum;
+    setScrollAndPageNum(state, { scroll, pageNum }) {
+      state.scroll = scroll;
+      state.pageNum = pageNum;
     },
     set(state, { v, val }) {
       state[v] = val;
@@ -41,8 +40,8 @@ export default {
   },
   actions: {
     async createCard({ commit, getters }, payload) {
-      commit("clearError");
-      commit("setLoading", true);
+      commit('clearError');
+      commit('setLoading', true);
 
       try {
         const newCard = new CardMongo(
@@ -62,11 +61,11 @@ export default {
 
         for (let i = 0; i < files.length; i++) {
           let imageExt = files[i].name.slice(
-            files[i].name.lastIndexOf(".") + 1
+            files[i].name.lastIndexOf('.') + 1
           );
           let path = `cards/${key}_${i}.${imageExt}`;
 
-          let fileData = await firebase
+          await firebase
             .storage()
             .ref(path)
             .put(files[i])
@@ -80,16 +79,16 @@ export default {
           CardsService.updateCard({ id: key, img: imageSrc });
 
         // commit('createCard', newCard)
-        commit("setLoading", false);
+        commit('setLoading', false);
       } catch (error) {
-        commit("setError", error.message);
-        commit("setLoading", false);
+        commit('setError', error.message);
+        commit('setLoading', false);
         throw error;
       }
     },
     async deleteCard({ commit, getters }, { id, ownerId, images }) {
-      commit("clearError");
-      commit("setLoading", true);
+      commit('clearError');
+      commit('setLoading', true);
 
       var userId = getters.userId;
 
@@ -99,72 +98,60 @@ export default {
 
           if (images) {
             images.forEach(s => {
-              let indq = s.indexOf("?");
-              let inde = s.lastIndexOf("cards%2F", indq) + 8;
+              let indq = s.indexOf('?');
+              let inde = s.lastIndexOf('cards%2F', indq) + 8;
               let name = s.slice(inde, indq);
               firebase
                 .storage()
-                .ref("cards/" + name)
+                .ref('cards/' + name)
                 .delete();
             });
           }
 
-          commit("setLoading", false);
-          commit("setError", { msg: "Card delete", color: "red" });
+          commit('setLoading', false);
+          commit('setError', { msg: 'Card delete', color: 'red' });
         } else {
-          commit("setLoading", false);
-          commit("setError", "You must be author this card");
+          commit('setLoading', false);
+          commit('setError', 'You must be author this card');
         }
       } catch (error) {
-        commit("setError", error.message);
-        commit("setLoading", false);
+        commit('setError', error.message);
+        commit('setLoading', false);
         throw error;
       }
     },
     async editCard({ commit, getters }, { id, update, orderImg, files }) {
       // TODO check security
 
-      commit("clearError");
-      commit("setLoading", true);
+      commit('clearError');
+      commit('setLoading', true);
 
       // var uid = getters.userId
-      // console.log('deleteCard [id, ownerId, images]', id, ownerId, images)
 
       try {
         // if (uid === ownerId) {
-        console.log(
-          "EditCard [id, update, orderImg, files]",
-          id,
-          update,
-          orderImg,
-          files
-        );
 
         if (files.length) {
-          console.log("files true");
           var response = await CardsService.findById({ id });
           if (response.data.card) {
             var img = response.data.card.img;
 
             if (img) {
-              console.log("img true");
               for (let i = 0; i < img.length; i++) {
-                console.log("deleteImg", i);
-                let indq = img[i].indexOf("?");
-                let inde = img[i].lastIndexOf("cards%2F", indq) + 8;
+                let indq = img[i].indexOf('?');
+                let inde = img[i].lastIndexOf('cards%2F', indq) + 8;
                 let name = img[i].slice(inde, indq);
-                await fb
+                await firebase
                   .storage()
-                  .ref("cards/" + name)
+                  .ref('cards/' + name)
                   .delete();
               }
             }
 
             var imageSrc = [];
             for (let i = 0; i < files.length; i++) {
-              console.log("filePut", i);
               let imageExt = files[i].name.slice(
-                files[i].name.lastIndexOf(".") + 1
+                files[i].name.lastIndexOf('.') + 1
               );
               let path = `cards/${id}_${i}.${imageExt}`;
 
@@ -182,85 +169,86 @@ export default {
             });
           }
         } else if (orderImg.length) {
-          console.log("orderImg true");
           await CardsService.updateCard({
             id,
             ...update,
             img: imageSrc
           });
         } else {
-          console.log("else true");
           await CardsService.updateCard({
             id,
             ...update
           });
         }
 
-        commit("setLoading", false);
-        commit("setError", { msg: "Card update", color: "primary" });
+        commit('setLoading', false);
+        commit('setError', { msg: 'Card update', color: 'primary' });
         // } else {
         // 	commit('setLoading', false)
         // 	commit('setError', 'You must be author this card')
         // }
       } catch (error) {
-        commit("setError", error.message);
-        commit("setLoading", false);
+        commit('setError', error.message);
+        commit('setLoading', false);
         throw error;
       }
     },
-    async fetchCards({ commit, getters }, { scroll, pageNum }) {
-      commit("clearError");
-      commit("setLoading", true);
-
-      console.log('fetchCards [scroll, pageNum]', scroll, pageNum);
+    async fetchCards({ commit, getters }, { scroll, pageNum, max = 1000, min = 0, text = null }) {
+      commit('clearError');
+      commit('setLoading', true);
 
       try {
+        console.log('somea', getters.userId, getters.get('position'));
         const response = await CardsService.fetchCards({
           userId: getters.userId,
-          position: getters.get("position"),
-          pageNum
+          position: getters.get('position'),
+          pageNum,
+          max,
+          min,
+          text
         });
         // const resultCards = response.data.cards;
 
+
         commit('setScrollAndPageNum', { scroll, pageNum: pageNum + 1 });
-        commit("loadCards", response.data.cards);
-        commit("setLoading", false);
+        commit('loadCards', response.data.cards);
+        commit('setLoading', false);
       } catch (error) {
-        commit("setError", error.message);
-        commit("setLoading", false);
+        commit('setError', error.message);
+        commit('setLoading', false);
         throw error;
       }
     },
     async fetchSingle({ commit, getters }, { id }) {
-      commit("clearError");
-      commit("setLoading", true);
+      commit('clearError');
+      commit('setLoading', true);
 
       try {
         const response = await CardsService.findById({
           id: id,
           userId: getters.userId,
-          position: getters.get("position")
+          position: getters.get('position')
         });
         const resultCards = response.data.card[0];
 
-        commit("set", { v: "single", val: resultCards });
-        commit("setLoading", false);
+        commit('set', { v: 'single', val: resultCards });
+        commit('setLoading', false);
       } catch (error) {
-        commit("setError", error.message);
-        commit("setLoading", false);
+        commit('setError', error.message);
+        commit('setLoading', false);
         throw error;
       }
     },
 
     async toggleLike({ commit, getters }, { id, has }) {
-      commit("clearError");
-      commit("setLoading", true);
+      commit('clearError');
+      commit('setLoading', true);
 
       var user_id = getters.userId;
 
       try {
         if (user_id) {
-          // type true -- like
+          // type true = like, false = visit
           await CardsService.updateLikeVisitCard({
             id,
             has,
@@ -269,26 +257,26 @@ export default {
           });
 
           // commit('toggleLike', { id, red })
-          commit("setLoading", false);
+          commit('setLoading', false);
         } else {
-          commit("setLoading", false);
-          commit("setError", "You must be logined");
+          commit('setLoading', false);
+          commit('setError', 'You must be logined');
         }
       } catch (error) {
-        commit("setError", error.message);
-        commit("setLoading", false);
+        commit('setError', error.message);
+        commit('setLoading', false);
         throw error;
       }
     },
     async toggleVisit({ commit, getters }, { id, has }) {
-      commit("clearError");
-      commit("setLoading", true);
+      commit('clearError');
+      commit('setLoading', true);
 
       var user_id = getters.userId;
 
       try {
         if (user_id) {
-          // type true -- like
+          // type true = like, false = visit
           await CardsService.updateLikeVisitCard({
             id,
             has,
@@ -296,14 +284,14 @@ export default {
             type: false
           });
 
-          commit("setLoading", false);
+          commit('setLoading', false);
         } else {
-          commit("setLoading", false);
-          commit("setError", "You must be logined");
+          commit('setLoading', false);
+          commit('setError', 'You must be logined');
         }
       } catch (error) {
-        commit("setError", error.message);
-        commit("setLoading", false);
+        commit('setError', error.message);
+        commit('setLoading', false);
         throw error;
       }
     }

@@ -1,14 +1,14 @@
-import api from "@/services/api";
+import api from '@/services/api';
 
 export default {
   fetchCards(params) {
-    return api().get("cards", { params: params });
+    return api().get('cards', { params: params });
   },
   findById(params) {
-    return api().get(`card/${params.id}`, { params: params });
+    return api().get(`card`, { params: params });
   },
   addNewCard(params) {
-    return api().post("card", params);
+    return api().post('card', params);
   },
   updateCard(params) {
     return api().put(`card/update/${params.id}`, params);

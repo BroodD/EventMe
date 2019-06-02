@@ -51,7 +51,6 @@
 
             <div class="d-flex align-center">
               <div class="text--small">{{ card.time | formatDate }}</div>
-              <!-- <div class="text--small ml-3" v-if="card.distance">{{ (card.distance / 1000).toFixed(2) }}km</div> -->
             </div>
           </v-list-tile-content>
         </router-link>
@@ -85,36 +84,31 @@
       <!-- </router-link> -->
     </v-list>
 
-    <v-card-title>
+    <v-card-title class="pb-1">
       <v-layout row wrap mx-0 align-center>
         <router-link :to="'/card/' + card._id">
           <div class="headline">{{ card.title }}</div>
         </router-link>
 
         <v-spacer></v-spacer>
-
-        <template v-if="card.distance">
-          <div class="d-flex align-center">
-            <div class="primary--text">
-              {{ (card.distance / 1000).toFixed(2) }}km
-            </div>
-          </div>
-        </template>
       </v-layout>
     </v-card-title>
 
-    <v-card-text class="pre">{{ card.desc }}</v-card-text>
+    <v-card-text>
+      <template v-if="card.distance">
+        <div class="d-flex align-center">
+          <div class="primary--text">
+            {{ (card.distance / 1000).toFixed(2) }}km
+          </div>
+        </div>
+      </template>
+    </v-card-text>
+
+    <v-card-text class="pre">{{ card.desc.slice(0, 150) + '...' }}</v-card-text>
 
     <v-divider></v-divider>
 
     <v-card-actions>
-      <template v-if="card.distance">
-          <div class="d-flex align-center">
-            <div class="primary--text">
-              {{ (card.distance / 1000).toFixed(2) }}km
-            </div>
-          </div>
-        </template>
       <v-spacer></v-spacer>
 
       <v-btn flat :color="card.hasVisit ? 'red' : ''" @click="toggVisit()">

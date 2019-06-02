@@ -11,45 +11,32 @@ import Single from "@/views/Card/Single";
 import NewCard from "@/views/Card/NewCard";
 import Edit from "@/views/Card/Edit";
 
+const fb = require('firebase/app')
+require('firebase/auth')
 
-var fb = require("firebase/app");
-require("firebase/auth");
+import store from "@/store"
 
 Vue.use(Router);
 
 const router = new Router({
   mode: "history",
   // base: process.env.BASE_URL,
-  // saveScrollPosition: true,
+  // saveScrollPosition: false,
   scrollBehavior(to, from, savedPosition) {
-    // document.getElementById('app').scrollIntoView();
-    //     return null;
-
-    // console.log("savedPosition, to.hash", savedPosition, to.hash);
-    if (savedPosition !== null) {
-      return savedPosition;
-    } else if (to.hash) {
+    if (to.hash) {
       return { selector: to.hash };
     }
-
+    
     return {
       x: 0,
       y: 0
     };
-
-    // if(to.path != '/') {
-    // 	return {
-    // 		x: 0,
-    // 		y: 0
-    // 	}
-    // }
   },
   routes: [
     {
       path: "/",
       name: "home",
       component: Home,
-      // meta: { requiresAuth: true }
     },
     {
       path: "/auth",
@@ -99,6 +86,66 @@ const router = new Router({
     }
   ]
 });
+
+// let p = new Promise((resolve, reject) => {
+//   fb.auth().onAuthStateChanged(user => {
+//     console.log('auth ');
+//     resolve("result");
+//   })
+// })
+
+// router.beforeEach(async (to, from, next) => {
+//   console.log('beforeAuth')
+
+//   const u = await fb.auth().currentUser
+//   if (!u) {
+//     console.log('has u')
+//     fb.auth().onAuthStateChanged(user => {
+//       if (user) {
+//         console.log('has user')
+//         store
+//           .dispatch('autoLoginUser', {
+//             id: user.uid,
+//             email: user.email
+//           })
+//           .then(() => {
+//             next()
+
+//             // if (!user.emailVerified)
+//             //   store.commit("setError", {
+//             //     msg: "Verification email sent to " + user.email,
+//             //     color: "orange"
+//             //   });
+
+//             // return to prev link
+//             // if (window.history.length > 2) {
+//             //   if (to.name == 'auth') self.$router.go(-1);
+//             // } else self.$router.push('/');
+
+//             // store.commit('clearCards');
+
+//             // let route = self.$route.name;
+//             // switch (route) {
+//             //   case 'user':
+//             //     break;
+//             //   case 'visit':
+//             //     store.dispatch('visitCards', { scroll: 0, pageNum: 0 });
+//             //     store.commit('set', { v: 'currentState', val: 'visit' });
+//             //     break;
+//             //   default:
+//             //     store.dispatch('fetchCards', { scroll: 0, pageNum: 0 });
+//             //     store.commit('set', { v: 'currentState', val: 'home' });
+//             // }
+
+//             // store.commit("set", { v: "cards", val: [] });
+//           });
+//       } else if (from.name != 'auth') {
+//         // router.push('/auth');
+//         next('auth')
+//       }
+//     });
+//   } else next()
+// })
 
 // router.beforeEach((to, from, next) => {
 //   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)

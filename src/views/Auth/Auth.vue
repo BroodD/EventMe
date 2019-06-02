@@ -16,6 +16,7 @@
             class="bg-gra-primary elevation-0 d-flex align-center h-100"
           >
             <v-card-text class="text-center">
+              <img src="@/assets/watch.svg" class="mb-5">
               <h2 class="fz-40">{{ greeting.title }}</h2>
               <p class="fw-300 mt-3 mb-4">{{ greeting.under }}</p>
               <v-btn outline round large @click="state = !state"

@@ -1,6 +1,5 @@
 <template>
-  <v-container grid-list-md id="my" v-scroll:#scroll-target="onScroll" v-if="user.img">
-
+  <v-container grid-list-md v-scroll="onScroll">
     <v-layout row wrap justify-center>
       <v-flex sm5 lg3 mb-5 class="text-center">
         <v-avatar size="200">
@@ -43,14 +42,6 @@
     <v-layout row wrap justify-center class="card-wrap">
       <v-flex xs12 md8 v-for="card in userCards" :key="card._id">
         <CardMongo :card="card" />
-        <!-- <v-btn
-					fab
-					dark
-					small
-					color="red"
-				>
-					<v-icon>delete</v-icon>
-				</v-btn> -->
       </v-flex>
     </v-layout>
   </v-container>
@@ -58,43 +49,44 @@
 
 <script>
 import { scroll } from "@/mixins/index";
+import store from "@/store";
+
 
 export default {
   props: ["id"],
   mixins: [scroll],
   computed: {
     userCards() {
-      return this.$store.getters.get("userCards");
+      return store.getters.cards
     },
     user() {
-      if (this.id != this.$store.getters.userId)
-        return this.$store.getters.otherUser;
-      return this.$store.getters.user;
+      if (this.id != store.getters.userId)
+        return store.getters.otherUser;
+      return store.getters.user;
     },
-    // loading() {
-    //   return this.$store.getters.loading;
-    // }
+    loading() {
+      return store.getters.loading;
+    }
   },
   methods: {
     toggFollow() {
       this.user.follow = !this.user.follow;
     },
-    reload() {
-      // var endAt = this.$store.getters.get('userEnd')
-      // if(endAt)
-      // 	this.$store.dispatch('userCards', { id: this.id, user: this.user, endAt })
-      // else
-      // 	this.$store.dispatch('setError', { msg: 'No more cards', color: 'orange' })
+    reload({ scroll }) {
+      store.dispatch("userCards", { id: this.id, scroll, pageNum: this.pageNum });
     }
   },
-  async beforeMount() {
-    if (this.id != this.$store.getters.userId)
-      await this.$store.dispatch("otherUser", this.id);
-
-    // if(!this.cards) {
-    this.$store.commit("set", { v: "userCards", val: [] });
-    this.$store.dispatch("userCards", { id: this.id });
-    // }
-  }
+  async beforeRouteEnter(to, from, next) {
+    if (store.getters.userId != to.params.id)
+      await store.dispatch("otherUser", to.params.id);
+    
+    const currentState = await store.getters.get('currentState')
+    if (currentState != 'user') {
+      store.commit("clearCards");
+      store.commit("set", { v: "currentState", val: 'user' })
+      await store.dispatch("userCards", { id: to.params.id, scroll: 0, pageNum: 0 });
+    }
+    next()
+  },
 };
 </script>

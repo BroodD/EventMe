@@ -1,33 +1,3 @@
-export class Cards {
-  constructor(
-    title,
-    desc,
-    ownerId,
-    time,
-    like,
-    visit,
-    people,
-    comments,
-    ownerName = null,
-    ownerImg = null,
-    img = null,
-    id = null
-  ) {
-    this.title = title;
-    this.desc = desc;
-    this.ownerId = ownerId;
-    this.time = time;
-    this.like = like;
-    this.visit = visit;
-    this.people = people;
-    this.comments = comments;
-    this.ownerName = ownerName;
-    this.ownerImg = ownerImg;
-    this.img = img;
-    this.id = id;
-  }
-}
-
 export class CardMongo {
   constructor(title, desc, user, time, people, location) {
     this.title = title;

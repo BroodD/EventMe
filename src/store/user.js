@@ -194,29 +194,20 @@ export default {
       commit("setOtherUser", user);
     },
 
-    async userCards({ commit, getters }, { id, pn }) {
+    async userCards({ commit, getters }, { id, scroll, pageNum }) {
       commit("clearError");
       commit("setLoading", true);
 
-      console.log("userCards [id, user, endAt]", id); // , user, endAt)
-
       try {
         var resultCards = [];
-        const responce = await UsersService.userCards({
+        const response = await UsersService.userCards({
           id,
-          // user_id: getters.userId,
           position: getters.get("position"),
-          pn
+          pageNum
         });
 
-        if (responce.data.cards) {
-          resultCards = responce.data.cards;
-          console.log(resultCards);
-          commit("set", { v: "userCards", val: resultCards });
-        }
-
-        // resultCards = resultCards.concat(getters.get('userCards'))
-        // commit('set', { v: 'userEnd', val: end[0] })
+        commit('setScrollAndPageNum', { scroll, pageNum: pageNum + 1 });
+        commit("loadCards", response.data.cards);
         commit("setLoading", false);
       } catch (error) {
         commit("setError", error.message);
@@ -228,7 +219,7 @@ export default {
       commit("clearError");
       commit("setLoading", true);
 
-      console.log('fetchCards [scroll, pageNum]', scroll, pageNum);
+      console.log('visitCards [scroll, pageNum]', scroll, pageNum);
 
       try {
         var id = getters.userId;

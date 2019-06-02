@@ -64,6 +64,7 @@
                       full-width
                       v-model="date"
                       @input="$refs.date.save(date)"
+                      first-day-of-week
                     ></v-date-picker>
                   </v-dialog>
 

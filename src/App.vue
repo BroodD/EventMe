@@ -134,24 +134,9 @@
       indeterminate
     ></v-progress-linear>
 
-    <!-- <v-container
-      >
-        <v-layout
-          v-scroll:#scroll-target="onScroll"
-          style="height: 1000px"
-          column
-          align-center
-          justify-center
-        >
-        </v-layout>
-      </v-container> -->
-
-    <!-- <v-content id="scroll-target" style="max-height: 100vh" class="scroll-y overflow-x-hidden"> -->
-    <!-- <v-content> -->
-      <!-- <transition name="fade" mode="out-in" @before-enter="beforeEnter" appear> -->
-      <router-view></router-view>
-      <!-- </transition> -->
-    <!-- </v-content> -->
+    <template>
+    <router-view></router-view>
+    </template>
 
     <!-- :active.sync="bottomNav" -->
     <v-bottom-nav

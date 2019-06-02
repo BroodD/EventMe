@@ -14,15 +14,15 @@ export default {
     return api().post("user", params);
   },
   updateUser(params) {
-    return api().put(`user/${params.id}`, params);
+    return api().put(`user`, params);
   },
   deleteUser(params) {
-    return api().delete(`user/${params.id}`);
+    return api().delete(`user`, { params });
   },
   userCards(params) {
-    return api().get(`user/cards/beta/${params.id}`, { params: params });
+    return api().get(`user/cards/beta`, { params });
   },
   visitCards(params) {
-    return api().get(`user/visit/${params.id}`, { params: params });
+    return api().get(`user/visit/beta`, { params });
   }
 };

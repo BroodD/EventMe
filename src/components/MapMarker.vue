@@ -73,7 +73,19 @@ export default {
         position: this.position
       };
       this.center = this.marker.position;
-    } else this.geolocate();
+    } else {
+      const pos = this.$store.getters.get('position')
+      console.log(pos);
+      this.center = {
+        lat: pos[0],
+        lng: pos[1]
+      };
+      this.marker = {
+        position: this.center
+      };
+
+      this.$emit("onLocation", this.marker.position);
+    }
   },
 
   methods: {
@@ -109,19 +121,19 @@ export default {
 
       this.$emit("onLocation", this.marker.position);
     },
-    geolocate: function() {
-      navigator.geolocation.getCurrentPosition(position => {
-        this.center = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        this.marker = {
-          position: this.center
-        };
+    // geolocate: function() {
+    //   navigator.geolocation.getCurrentPosition(position => {
+    //     this.center = {
+    //       lat: position.coords.latitude,
+    //       lng: position.coords.longitude
+    //     };
+    //     this.marker = {
+    //       position: this.center
+    //     };
 
-        this.$emit("onLocation", this.marker.position);
-      });
-    }
+    //     this.$emit("onLocation", this.marker.position);
+    //   });
+    // }
   }
 };
 </script>
