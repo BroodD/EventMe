@@ -104,7 +104,7 @@
       </template>
     </v-card-text>
 
-    <v-card-text class="pre">{{ card.desc.slice(0, 150) + '...' }}</v-card-text>
+    <v-card-text class="pre">{{ card.location ? card.desc : card.desc.slice(0, 150) + '...' }}</v-card-text>
 
     <v-divider></v-divider>
 

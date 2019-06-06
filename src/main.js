@@ -40,29 +40,39 @@ fb.initializeApp({
 let app = null
 console.log('1 before fb');
 
-fb.auth().onAuthStateChanged(async user => {
 
-  if (user) {
-    console.log('2 have user');
-
-    // if (user.emailVerified) {
-      await store
-        .dispatch('autoLoginUser', {
-          id: user.uid,
-          email: user.email
-        })
-
-      async function getLocation() {
-        if (navigator.geolocation) {
-          await window.navigator.geolocation.getCurrentPosition(
-            position => {
-              var cords = [position.coords.latitude, position.coords.longitude];
-              store.commit('set', { v: 'position', val: cords });
-              console.log('3 get loc');
-              // router.push('/');
+async function getLocation() {
+  if (navigator.geolocation) {
+    await window.navigator.geolocation.getCurrentPosition(
+      position => {
+        var cords = [position.coords.latitude, position.coords.longitude];
+        store.dispatch('setPosition', cords).then(() => {
+          fb.auth().onAuthStateChanged(async user => {
+            if (user) {
+              console.log('2 have user');
+   
+              store
+                .dispatch('autoLoginUser', {
+                  id: user.uid,
+                  email: user.email
+                })
+                .then(() => {
+                  if (!app) {
+                    console.log('4.5 create vue');
+                    app = new Vue({
+                      el: '#app',
+                      router,
+                      store,
+                      render: h => h(App)
+                    });
+                  }
+                  router.push('/')
+                })
+            } else {
+              router.push('/auth');
 
               if (!app) {
-                console.log('4.5 create vue');
+                console.log('4 no login create vue');
                 app = new Vue({
                   el: '#app',
                   router,
@@ -70,36 +80,24 @@ fb.auth().onAuthStateChanged(async user => {
                   render: h => h(App)
                 });
               }
-            },
-            () => {
-              store.commit('setError', 'Please accept geo location');
-            },
-            { enableHighAccuracy: true, timeout: 60000, maximumAge: 600000 }
-            );
-        } else {
-          store.commit('setError', 'Geolocation is not supported by this browser');
-        }
-      }
-      await getLocation();
-    // } else {
-    //   store.commit('setError', 'Geolocation is not supported by this browser');
-    // }
-    
-    
-  } else {
-    if (!app) {
-      console.log('4 no login create vue');
-      app = new Vue({
-        el: '#app',
-        router,
-        store,
-        render: h => h(App)
-      });
-    }
+            }
+          })
+        }) 
+        console.log('3 get loc');
+        // router.push('/');
 
-    router.push('/auth');
+        
+      },
+      () => {
+        store.commit('setError', 'Please accept geo location');
+      },
+      { enableHighAccuracy: true, timeout: 60000, maximumAge: 600000 }
+      );
+  } else {
+    store.commit('setError', 'Geolocation is not supported by this browser');
   }
-})
+}
+getLocation()
 
 // function renderVue (self) {
 //     if (user) {

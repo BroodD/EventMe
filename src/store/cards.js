@@ -193,23 +193,18 @@ export default {
         throw error;
       }
     },
-    async fetchCards({ commit, getters }, { scroll, pageNum, max = 1000, min = 0, text = null }) {
+    async fetchCards({ commit, getters }, { scroll, pageNum, filter = {} }) {
       commit('clearError');
       commit('setLoading', true);
 
       try {
-        console.log('somea', getters.userId, getters.get('position'));
+        console.log('filter ', filter);
         const response = await CardsService.fetchCards({
           userId: getters.userId,
           position: getters.get('position'),
           pageNum,
-          max,
-          min,
-          text
+          filter
         });
-        // const resultCards = response.data.cards;
-
-
         commit('setScrollAndPageNum', { scroll, pageNum: pageNum + 1 });
         commit('loadCards', response.data.cards);
         commit('setLoading', false);

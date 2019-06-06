@@ -252,10 +252,6 @@ export default {
 
         this.$store
           .dispatch("loginUser", user)
-          .then(() => {
-            this.$router.push("/");
-          })
-          .catch(() => {});
       }
     },
     onRegistration() {
@@ -270,10 +266,6 @@ export default {
 
         this.$store
           .dispatch("registerUser", user)
-          .then(() => {
-            this.$router.push("/");
-          })
-          .catch(() => {});
       }
     },
 

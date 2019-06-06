@@ -39,12 +39,12 @@ export default {
         const responce = await UsersService.findByLoginMin({ login: login });
 
         if (responce.data.user == null) {
-          const responce = await UsersService.addNewUser({
-            login,
-            name,
-            bio: ""
-          });
-          const id = responce.data.id;
+          // const responce = await UsersService.addNewUser({
+          //   login,
+          //   name,
+          //   bio: ""
+          // });
+          // const id = responce.data.id;
 
           const userFb = await firebase
             .auth()
@@ -61,7 +61,16 @@ export default {
             .then(snapshot => snapshot.ref.getDownloadURL())
             .then(url => (imageSrc = url));
 
-          await UsersService.updateUser({ id: id, fbid: key, img: imageSrc });
+          const responce = await UsersService.addNewUser({
+            fbid: key,
+            login,
+            name,
+            bio: "",
+            img: imageSrc
+          });
+          const id = responce.data.id;
+
+          // await UsersService.updateUser({ id: id, fbid: key, img: imageSrc });
 
           // send email verifi letter
           var u = await firebase.auth().currentUser;
