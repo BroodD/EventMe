@@ -108,6 +108,14 @@ export default {
             });
           }
 
+          var removeIndex = getters.cards.map(function(item) { return item.id; })
+                       .indexOf(id);
+
+          const newArray = getters.cards.filter(obj => obj._id !== id);
+
+          commit('clearCards')
+          commit('loadCards', newArray)
+
           commit('setLoading', false);
           commit('setError', { msg: 'Card delete', color: 'red' });
         } else {
@@ -121,16 +129,10 @@ export default {
       }
     },
     async editCard({ commit, getters }, { id, update, orderImg, files }) {
-      // TODO check security
-
       commit('clearError');
       commit('setLoading', true);
 
-      // var uid = getters.userId
-
       try {
-        // if (uid === ownerId) {
-
         if (files.length) {
           var response = await CardsService.findById({ id });
           if (response.data.card) {
@@ -183,10 +185,6 @@ export default {
 
         commit('setLoading', false);
         commit('setError', { msg: 'Card update', color: 'primary' });
-        // } else {
-        // 	commit('setLoading', false)
-        // 	commit('setError', 'You must be author this card')
-        // }
       } catch (error) {
         commit('setError', error.message);
         commit('setLoading', false);
@@ -198,7 +196,6 @@ export default {
       commit('setLoading', true);
 
       try {
-        console.log('filter ', filter);
         const response = await CardsService.fetchCards({
           userId: getters.userId,
           position: getters.get('position'),

@@ -24,18 +24,20 @@
             <router-link :to="'/user/' + c.user._id">
               <v-list-tile-title v-html="c.user.login"></v-list-tile-title>
             </router-link>
-            <v-list-tile-sub-title v-html="c.text"></v-list-tile-sub-title>
+            <!-- <v-list-tile-sub-title v-html="c.text"></v-list-tile-sub-title> -->
           </v-list-tile-content>
+            
 
-          <v-list-tile-action>
+          <!-- <v-list-tile-action>
             <v-btn small flat fab>
               <v-icon>reply</v-icon>
             </v-btn>
-          </v-list-tile-action>
+          </v-list-tile-action> -->
         </v-list-tile>
 
-        <template v-for="r in c.reply">
-          <!-- <v-divider   :key="c.id"></v-divider> -->
+        <v-card-text>{{ c.text }}</v-card-text>
+
+        <!-- <template v-for="r in c.reply">
           <v-list-tile avatar class="pl-5">
             <router-link :to="'/user/' + r.user._id">
               <v-list-tile-avatar>
@@ -55,7 +57,7 @@
               <v-list-tile-sub-title v-html="r.text"></v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
-        </template>
+        </template> -->
       </template>
     </v-list>
 
@@ -98,6 +100,7 @@
 
 <script>
 import CardsService from "@/services/CardsService";
+import store from "@/store";
 
 export default {
   name: "CommentsList",
@@ -110,14 +113,15 @@ export default {
       comments: [],
       text: "",
       pn: 0,
-      pz: 10
+      pz: 5
     };
   },
   methods: {
     async addComment() {
       if (this.text) {
-        var st = this.$store;
-        var user = st.getters.userId;
+        // var st = this.$store;
+        // var user = store.getters.userId;
+        var user = store.getters.user
 
         try {
           if (user) {
@@ -126,19 +130,29 @@ export default {
 
             const responce = await CardsService.addComment({
               id: this.id,
-              user_id: user,
+              user_id: user.id,
               text: this.text
             });
-            console.log(responce.data.id);
+            if (this.comments.length >= 5) {
+              this.comments.pop()
+              console.log('pop', this.comments);
+            }
+            this.comments.unshift({
+              _id: responce.data.id,
+              text: this.text,
+              user,
+              create: 0
+            })
+            console.log('shift', this.comments);
           } else {
-            st.commit("setError", "You must be logined");
+            store.commit("setError", "You must be logined");
           }
         } catch (error) {
-          st.commit("setError", error.message);
+          store.commit("setError", error.message);
         }
         this.text = "";
       } else {
-        st.commit("setError", "Please input text");
+        store.commit("setError", "Please input text");
       }
     },
     async fetchComments(step) {
@@ -152,7 +166,7 @@ export default {
         });
         this.comments = response.data.comments;
       } catch (error) {
-        this.$store.commit("setError", error.message);
+        store.commit("setError", error.message);
         throw error;
       }
     }

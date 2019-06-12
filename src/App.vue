@@ -262,21 +262,8 @@ export default {
     onLogout() {
       this.$store.dispatch("logoutUser");
       this.$router.push("/");
-    },
-    onScroll(e) {
-      // var contentHeight = document.querySelector('.v-content')
-      // console.log(e.target.scrollTop, e.target.offsetHeight, contentHeight.clientHeight)
-      // if(e.target.scrollTop >= e.target.offsetHeight + 200)
     }
   }
-  // watch: {
-  // 	'$route' (to, from) {
-  // 		console.log(to)
-  // const toDepth = to.path.split('/').length
-  // const fromDepth = from.path.split('/').length
-  // this.transitionName = toDepth < fromDepth || to.path.length < from.path.length ? 'slide-right' : 'slide-left'
-  // 	}
-  // }
 };
 </script>
 

@@ -1,11 +1,11 @@
 <template>
   <v-container grid-list-md>
     <v-layout row wrap justify-center class="card-wrap" v-if="card">
-      <v-flex md8>
+      <v-flex xs12 md8>
         <CardMongo :card="card" />
       </v-flex>
 
-      <v-flex md8>
+      <v-flex xs12 md8>
         <v-card class="m-card mb-2 elevation-10">
           <v-card-title>
             <div class="headline">
@@ -35,11 +35,11 @@
         </v-card>
       </v-flex>
 
-      <v-flex md8>
+      <v-flex xs12 md8>
         <MembersList :id="id" :length="card.visit"></MembersList>
       </v-flex>
 
-      <v-flex md8>
+      <v-flex xs12 md8>
         <CommentsList
           :id="id"
           :length="card.comments"

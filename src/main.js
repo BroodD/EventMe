@@ -66,7 +66,8 @@ async function getLocation() {
                       render: h => h(App)
                     });
                   }
-                  router.push('/')
+                  if (app._route.name == 'auth')
+                    router.push('/')
                 })
             } else {
               router.push('/auth');

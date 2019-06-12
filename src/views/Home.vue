@@ -32,13 +32,13 @@
 
         <v-card-text>
           <h3 class="primary--text">Ordering</h3>
-          <v-btn color="primary" depressed @click="setOrder('orderDis')">
+          <v-btn color="primary" depressed @click="orderDis = !orderDis">
             Distance
-            <v-icon v-if="orderDis">{{ orderDis == 1 ? 'arrow_upward' : 'arrow_downward' }}</v-icon>
+            <v-icon>{{ orderDis ? 'arrow_upward' : 'arrow_downward' }}</v-icon>
           </v-btn>
-          <v-btn color="primary" depressed @click="setOrder('orderTime')">
+          <v-btn color="primary" depressed @click="orderTime = !orderTime">
             Time event
-            <v-icon v-if="orderTime">{{ orderTime == 1 ? 'arrow_upward' : 'arrow_downward' }}</v-icon>
+            <v-icon>{{ orderTime ? 'arrow_upward' : 'arrow_downward' }}</v-icon>
           </v-btn>
         </v-card-text>
 
@@ -100,8 +100,8 @@ export default {
       setting: false,
       text: '',
       distance: [null, null],
-      orderDis: 1,
-      orderTime: -1
+      orderDis: true,
+      orderTime: false
     }
   },
   computed: {
@@ -126,32 +126,32 @@ export default {
           max: this.distance[1],
           min: this.distance[0],
           text: this.text,
-          orderDis: this.orderDis,
-          orderTime: this.orderTime,
+          orderDis: this.orderDis ? 1 : -1,
+          orderTime: this.orderTime ? 1 : -1
         }
-        store.dispatch("fetchCards", { scroll, pageNum: this.pageNum, filter: filter });
+        store.dispatch("fetchCards", { scroll, pageNum: this.pageNum, filter });
       }
     },
     async onFilter () {
       this.scroll = 0
       const filter = {
-          max: this.distance[1],
-          min: this.distance[0],
-          text: this.text,
-          orderDis: this.orderDis,
-          orderTime: this.orderTime,
-        }
+        max: this.distance[1],
+        min: this.distance[0],
+        text: this.text,
+        orderDis: this.orderDis ? 1 : -1,
+        orderTime: this.orderTime ? 1 : -1
+      }
       await store.commit("clearCards")
-      await store.dispatch("fetchCards", { scroll: 0, pageNum: 0, filter: filter });
+      await store.dispatch("fetchCards", { scroll: 0, pageNum: 0, filter });
       this.setting = false
     },
     async onReset () {
       this.text =  '',
       this.distance =  [null, null],
-      this.orderDis =  1
-      this.orderTime =  -1
+      this.orderDis =  true
+      this.orderTime =  false
       await store.commit("clearCards")
-      await store.dispatch('fetchCards', { scroll: 0, pageNum: 0 })
+      await store.dispatch('fetchCards', { scroll: 0, pageNum: 0, filter: { orderDis: 1, orderTime: -1 } })
       this.setting = false
     }
   },
@@ -161,7 +161,11 @@ export default {
     if (currentState != 'home') {
       store.commit("clearCards");
       store.commit("set", { v: "currentState", val: 'home' })
-      store.dispatch('fetchCards', { scroll: 0, pageNum: 0 });
+      const filter = {
+        orderDis: 1,
+        orderTime: -1
+      }
+      store.dispatch('fetchCards', { scroll: 0, pageNum: 0, filter });
     }
     next()
   },

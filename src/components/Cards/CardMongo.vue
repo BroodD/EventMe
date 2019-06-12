@@ -1,6 +1,5 @@
 <template>
   <v-card class="mb-2 elevation-10 m-card">
-      <!-- v-if="Array.isArray(card.img) && card.img.length == 1" -->
     <router-link
       v-if="Array.isArray(card.img)"
       :to="'/card/' + card._id"
@@ -12,15 +11,11 @@
           aspect-ratio="1.7778"
           transition="slide-y-reverse-transition"
         >
-          <!-- transition="scale-transition" -->
-          <!-- gradient="to top right, rgba(38,38,38,.33), rgba(0,0,0,.7)" -->
-          <!-- class="elevation-5" -->
-          <!-- class="elevation-10 auto" -->
         </v-img>
       </div>
     </router-link>
 
-    <!-- <v-layout v-else-if="Array.isArray(card.img) && card.img.length > 1">
+    <v-layout v-else-if="Array.isArray(card.img) && card.img.length > 1">
       <v-flex class="py-0">
         <div class="round__img elevation-10">
           <v-carousel>
@@ -33,7 +28,7 @@
           </v-carousel>
         </div>
       </v-flex>
-    </v-layout> -->
+    </v-layout>
 
     <v-list>
       <v-list-tile avatar>
@@ -196,19 +191,20 @@ export default {
       var f;
 
       if (obj < now) return `Past ${h}:${mi} ${d}/${m}/${y}`;
+      return `${h}:${mi} ${d}/${m}/${y}`;
 
-      if (y == now.getFullYear())
-        if (m - now.getMonth() == 0)
-          if (d - now.getDate() == 0) f = "Today";
-          else if (d - now.getDate() == 1) f = "Tommorow";
-          else if (d - now.getDate() <= 7) f = "This week";
-          else if (d - now.getDate() <= 14) f = "Next week";
-          else f = "This month";
-        else if (m - now.getMonth() == 1) f = "Next month";
-        else f = `${d}/${m}`;
-      else f = `${d}/${m}/${y}`;
+      // if (y == now.getFullYear())
+      //   if (m - now.getMonth() == 0)
+      //     if (d - now.getDate() == 0) f = "Today";
+      //     else if (d - now.getDate() == 1) f = "Tommorow";
+      //     else if (d - now.getDate() <= 7) f = "This week";
+      //     else if (d - now.getDate() <= 14) f = "Next week";
+      //     else f = "This month";
+      //   else if (m - now.getMonth() == 1) f = "Next month";
+      //   else f = `${d}/${m}`;
+      // else f = `${d}/${m}/${y}`;
 
-      return `${f} ${h}:${mi}`;
+      // return `${f} ${h}:${mi}`;
     }
   }
 };

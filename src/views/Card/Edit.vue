@@ -64,7 +64,7 @@
                       full-width
                       v-model="date"
                       @input="$refs.date.save(date)"
-                      first-day-of-week
+                      first-day-of-week="1"
                     ></v-date-picker>
                   </v-dialog>
 
@@ -361,7 +361,7 @@ export default {
       }
     }
   },
-  async beforeMount() {
+  async created () {
     await this.$store.dispatch("fetchSingle", { id: this.id }).then(() => {
       console.log(this.single);
       if (this.single) {
@@ -374,6 +374,7 @@ export default {
         let d = new Date(this.single.time);
         this.time = d.toISOString().substr(11, 5);
         this.date = d.toISOString().substr(0, 10);
+        console.log('date --- ', this.date)
 
         let loc = this.single.location;
         console.log(loc);

@@ -7,8 +7,8 @@ export default () => {
   const position = store.getters.get('position')
 
   const apiClient = axios.create({
-    baseURL: 'http://localhost:8081',
-    // baseURL: 'https://event-me.herokuapp.com',
+    // baseURL: 'http://localhost:8081',
+    baseURL: 'https://event-me.herokuapp.com',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -17,7 +17,7 @@ export default () => {
     }
   });
 
-  apiClient.interceptors.response.use(response => { // Called on response
+  apiClient.interceptors.response.use(response => { 
     return response
   },
     error => {

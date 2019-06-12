@@ -181,6 +181,7 @@
               <v-spacer></v-spacer>
               <v-btn
                 color="primary"
+                :loading="loading"
                 @click="step === 4 ? createCard() : step++"
               >
                 {{ step === 4 ? "Create" : "Next" }}
@@ -214,9 +215,9 @@ export default {
     return {
       step: 1,
 
-      title: "Some title",
-      desc: "awdawda da wd",
-      people: "4",
+      title: "",
+      desc: "",
+      people: "",
       time: null,
       timeModal: false,
       date: null,
@@ -284,7 +285,9 @@ export default {
         this.$store
           .dispatch("createCard", card)
           .then(() => {
-            this.$router.push("/user/" + this.$store.getters.userId);
+            setTimeout(() => {
+              this.$router.push("/user/" + this.$store.getters.userId);
+            }, 1000)
           })
           .catch(() => {});
       }
